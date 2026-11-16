@@ -2,6 +2,9 @@
 // manifests, rule citations against SOURCES.md, relative links, the routing table and the budget
 // tables against scripts/orchestrate.mjs, project-specific wording, environment files and
 // attribution lines. Run from the skill directory: node --test skill-docs.test.mjs
+// In the published repository the README, LICENSE and plugin manifests sit two levels up, at the
+// repository root, beside skills/ui-audit/; an installed copy of the skill folder has none of them, and
+// the checks that need them are skipped there.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -29,6 +32,19 @@ function walk(dir = ROOT, rel = '') {
   return out;
 }
 const FILES = walk();
+// The repository root when this folder is skills/ui-audit of the published repository, else null.
+const REPO = (() => {
+  const up = path.resolve(ROOT, '..', '..');
+  return fs.existsSync(path.join(up, '.claude-plugin', 'marketplace.json')) && path.basename(path.dirname(ROOT)) === 'skills' ? up : null;
+})();
+// A shared file (README.md, .claude-plugin/*) from the repository root, else from this folder, else null.
+const readShared = (rel) => {
+  for (const base of [REPO, ROOT].filter(Boolean)) {
+    const file = path.join(base, rel);
+    if (fs.existsSync(file)) return fs.readFileSync(file, 'utf8');
+  }
+  return null;
+};
 const MARKDOWN = FILES.filter((file) => file.endsWith('.md'));
 const TEXT = FILES.filter((file) => /\.(md|mjs|cjs|js|json|txt)$/.test(file) || ['LICENSE', 'NOTICE', '.gitignore'].includes(file));
 
@@ -59,8 +75,17 @@ test('every file npm test lists exists, and the plugin, marketplace and package 
   assert.ok(listed.length >= 10);
   for (const file of listed) assert.ok(FILES.includes(file), `${file} exists`);
   for (const file of FILES.filter((f) => /\.test\.[cm]?js$/.test(f))) assert.ok(listed.includes(file), `${file} is run by npm test`);
-  const plugin = JSON.parse(read('.claude-plugin/plugin.json'));
-  const market = JSON.parse(read('.claude-plugin/marketplace.json'));
+  const lock = JSON.parse(read('package-lock.json'));
+  assert.equal(lock.lockfileVersion, 3);
+  assert.equal(lock.packages['node_modules/playwright-core'].version, '1.63.0');
+  assert.equal(pkg.dependencies['playwright-core'], '1.63.0');
+  assert.deepEqual(Object.keys(pkg.dependencies), ['playwright-core'], 'no other dependency');
+  assert.equal(lock.packages[''].engines.node, pkg.engines.node);
+  const pluginText = readShared('.claude-plugin/plugin.json');
+  const marketText = readShared('.claude-plugin/marketplace.json');
+  if (pluginText === null || marketText === null) return;
+  const plugin = JSON.parse(pluginText);
+  const market = JSON.parse(marketText);
   assert.equal(plugin.name, 'ui-audit');
   assert.equal(plugin.version, pkg.version);
   assert.equal(plugin.license, 'MIT');
@@ -68,12 +93,10 @@ test('every file npm test lists exists, and the plugin, marketplace and package 
   assert.equal(market.plugins[0].name, plugin.name);
   assert.equal(market.plugins[0].source, './');
   assert.equal(market.plugins[0].version, pkg.version);
-  const lock = JSON.parse(read('package-lock.json'));
-  assert.equal(lock.lockfileVersion, 3);
-  assert.equal(lock.packages['node_modules/playwright-core'].version, '1.63.0');
-  assert.equal(pkg.dependencies['playwright-core'], '1.63.0');
-  assert.deepEqual(Object.keys(pkg.dependencies), ['playwright-core'], 'no other dependency');
-  assert.equal(lock.packages[''].engines.node, pkg.engines.node);
+  if (REPO) {
+    assert.deepEqual(market.plugins[0].skills, ['./skills/ui-audit']);
+    assert.deepEqual(plugin.skills, ['./skills/ui-audit']);
+  }
 });
 
 test('every rule citation names a row of SOURCES.md', () => {
@@ -94,6 +117,16 @@ test('every rule citation names a row of SOURCES.md', () => {
     for (const match of text.matchAll(/\bRULE:([A-Z][A-Z0-9]*-\d{2,3})\b/g)) assert.ok(ids.has(match[1]), `${file}: RULE:${match[1]} is not in SOURCES.md`);
   }
   assert.ok(cited > 100, `${cited} citations checked`);
+});
+
+test('the repository README links only to files that exist', () => {
+  if (!REPO) return;
+  const text = fs.readFileSync(path.join(REPO, 'README.md'), 'utf8').replace(/```[\s\S]*?```/g, '');
+  for (const match of text.matchAll(/\]\(([^)\s]+)\)/g)) {
+    const target = match[1];
+    if (/^(https?:|mailto:|#)/.test(target) || target.includes('<')) continue;
+    assert.ok(fs.existsSync(path.join(REPO, decodeURIComponent(target.split('#')[0]))), `README.md: broken link ${target}`);
+  }
 });
 
 test('relative Markdown links resolve to files of the repository', () => {
@@ -166,7 +199,9 @@ test('the budget tables of SKILL.md, ORCHESTRATION.md, RUN-METADATA.md and READM
   assert.deepEqual(row(meta, 'Reserve at the gate'), reserved);
   assert.deepEqual(row(meta, 'Smallest cap that holds the floor'), holds);
   assert.deepEqual(row(meta, 'Smallest cap that can start'), starts);
-  const readme = tableRows(read('README.md'), '| | quick | standard | deep |');
+  const readmeText = readShared('README.md');
+  if (readmeText === null) return;
+  const readme = tableRows(readmeText, '| | quick | standard | deep |');
   assert.deepEqual(row(readme, 'Reserved before hunting'), reserved);
   assert.deepEqual(row(readme, 'Smallest cap that keeps consults'), holds);
   assert.deepEqual(row(readme, 'Smallest cap that can start'), starts);

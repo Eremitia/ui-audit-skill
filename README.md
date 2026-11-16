@@ -44,7 +44,7 @@ never a finding.
 | Visual and theming | light and dark parity, theme flash, native controls, token discipline, component consistency, "template look" judged against a written criterion, unintended visual change since an approved baseline |
 | Project conventions | the UI rules your repository writes down (CLAUDE.md, AGENTS.md, CONTRIBUTING, Cursor or Copilot rule files, lint configs) and owner preferences you confirm |
 
-Thresholds and tool behaviour are research-backed and listed with their sources in [SOURCES.md](SOURCES.md):
+Thresholds and tool behaviour are research-backed and listed with their sources in [SOURCES.md](skills/ui-audit/SOURCES.md):
 WCAG 2.2 (with WCAG 3 treated as an informative draft only), Core Web Vitals including INP, Lighthouse and
 axe-core behaviour and limits, framework guidance for Next.js, React, Vite, Nuxt, SvelteKit, Astro, Angular
 and React Router, end-to-end and visual-regression practice, Nielsen heuristics with form and checkout
@@ -76,7 +76,7 @@ A full audit runs six phases:
 5. **Final record verification.** One fresh agent re-checks each record without changing anything.
 6. **Reports.** REPORT.md, FINDINGS-DETAIL.md, NEEDS-VALIDATION.md and COVERAGE.md in your language.
 
-Around those phases the orchestration layer ([ORCHESTRATION.md](ORCHESTRATION.md)) adds:
+Around those phases the orchestration layer ([ORCHESTRATION.md](skills/ui-audit/ORCHESTRATION.md)) adds:
 
 - **An agent budget.** Every agent invocation counts, retries and resumes included, against a cap: 40 for a
   standard run, 15 for quick, 90 for deep, all configurable. Reserves for reconnaissance, critics,
@@ -148,61 +148,36 @@ ui-audit is built to be run against your own code without risk to your data, you
 
 ## Install
 
-The skill folder must be named `ui-audit`, because a skill's name must equal its folder name
-[rule: CLAUDE-03]. After a clone or `npx skills` install, the pinned `playwright-core` is not yet in the
-skill's own `node_modules`. The skill checks this on first use with `node scripts/setup.mjs` and, with your
-yes, installs it with `node scripts/setup.mjs --install` (`npm ci --ignore-scripts`, one download from the npm
-registry, no browser). You can also run `npm ci` in the skill folder yourself; a plugin install does it for
-you [rule: CLAUDE-30]. Until it is installed, the probe uses its built-in CDP driver. Check the install by typing `/ui-audit` in Claude
-Code [rule: CLAUDE-28].
-
-### As a project skill (shared with your team through the repository)
+Install the skill with the [Skills CLI](https://skills.sh):
 
 ```sh
-git clone https://github.com/Eremitia/ui-audit-skill.git .claude/skills/ui-audit
-cd .claude/skills/ui-audit && npm ci
+npx skills add https://github.com/Eremitia/ui-audit-skill --skill ui-audit
 ```
 
-The skill lives at `.claude/skills/ui-audit` in your project and is excluded from the audited surface.
+Use `--global` for a user-level installation, available in every project. A personal copy at
+`~/.claude/skills/ui-audit` takes precedence over a project copy with the same name [rule: CLAUDE-07]. The
+installer sends anonymous telemetry unless `DISABLE_TELEMETRY=1` is set (in PowerShell,
+`$env:DISABLE_TELEMETRY = "1"`) [rule: CLAUDE-34]. Run `npx skills --help` for agent-selection and
+non-interactive options.
 
-### As a personal skill (available in every project)
-
-```sh
-git clone https://github.com/Eremitia/ui-audit-skill.git ~/.claude/skills/ui-audit
-cd ~/.claude/skills/ui-audit && npm ci
-```
-
-A personal copy at `~/.claude/skills/ui-audit` takes precedence over a project copy with the same name
-[rule: CLAUDE-07].
-
-### With the skills CLI
-
-The third-party `skills` installer can copy or link the skill into either location
-[rule: CLAUDE-34]. It sends anonymous telemetry unless you disable it, so pass the variable:
-
-```sh
-DISABLE_TELEMETRY=1 npx skills add Eremitia/ui-audit-skill -a claude-code
-```
-
-On Windows PowerShell, set it first: `$env:DISABLE_TELEMETRY = "1"`. Then run `npm ci` inside the installed
-`ui-audit` folder. The installer's lock file hashes every file in the skill folder except `.git` and
-`node_modules`, which is one more reason run output never lives there [rule: CLAUDE-35].
-
-### As a Claude Code plugin
-
-The repository is also a plugin and its own marketplace (`.claude-plugin/plugin.json` and
-`.claude-plugin/marketplace.json`) [rule: CLAUDE-29, CLAUDE-31]:
+Or install it as a Claude Code plugin; the repository is its own marketplace [rule: CLAUDE-29, CLAUDE-31]:
 
 ```sh
 claude plugin marketplace add Eremitia/ui-audit-skill
 claude plugin install ui-audit@ui-audit-marketplace
 ```
 
-or `/plugin marketplace add Eremitia/ui-audit-skill` inside a session. Claude Code copies the plugin into its
-plugin cache and installs `playwright-core` from `package-lock.json` there [rule: CLAUDE-30]. The skill is
-then invoked as `/ui-audit:ui-audit`. To try it for one session without a marketplace:
-`claude --plugin-dir ./ui-audit-skill` [rule: CLAUDE-33]. Plugin versions are pinned by the manifest
-`version`, so a new release reaches you when that number changes [rule: CLAUDE-32].
+or `/plugin marketplace add Eremitia/ui-audit-skill` inside a session; the skill is then invoked as
+`/ui-audit:ui-audit`. Plugin versions follow the manifest `version`, so a new release reaches you when that
+number changes [rule: CLAUDE-32].
+
+The skill lives in [`skills/ui-audit/`](skills/ui-audit/), and its folder must stay named `ui-audit`,
+because a skill's name equals its folder name [rule: CLAUDE-03]. On first use it checks for its one
+dependency, the pinned `playwright-core`, with `node <skill-dir>/scripts/setup.mjs`, and with your yes
+installs it into its own folder with `--install` (`npm ci --ignore-scripts`, one download from the npm
+registry, no browser). Until then the probe uses its built-in CDP driver. Check the install by typing
+`/ui-audit` in Claude Code [rule: CLAUDE-28]. The installer's lock file hashes every file in the skill folder
+except `.git` and `node_modules`, which is one more reason run output never lives there [rule: CLAUDE-35].
 
 ## Configuration
 
@@ -218,7 +193,7 @@ When none exists and you ask for a full audit or fix mode, the skill asks once, 
 are on (a subscription, a team seat or the API; recorded only as a note, it never changes routing), which
 profile to use by default, and whether a model that needs usage credits or extra consent may be used. It
 writes the file and shows the resulting cap and reserve. You can edit the file at any time; start from
-[ui-audit.config.example.json](ui-audit.config.example.json).
+[ui-audit.config.example.json](skills/ui-audit/ui-audit.config.example.json).
 
 | Key | Meaning | Default |
 |---|---|---|
@@ -309,24 +284,24 @@ reviewed, tested branches without touching anything you have not approved.
    `git push <remote> refs/heads/<b>:refs/heads/<b>` for those branches and opens draft PRs to your PR target.
    It never merges. FIXES.md also lists the commands if you prefer to push yourself.
 
-Details: [FIX-MODE.md](FIX-MODE.md).
+Details: [FIX-MODE.md](skills/ui-audit/FIX-MODE.md).
 
 ## Example run
 
-[examples/](examples/) holds a complete, validated example for a fictional Vite and React storefront,
+[examples/](skills/ui-audit/examples/) holds a complete, validated example for a fictional Vite and React storefront,
 `demo-store`, audited with the standard profile and a cap of 40:
 
-- [examples/ui-audit.config.json](examples/ui-audit.config.json): the config the setup question wrote,
+- [examples/ui-audit.config.json](skills/ui-audit/examples/ui-audit.config.json): the config the setup question wrote,
   then edited by the owner (`fable` declared unavailable, a larger orchestration reserve);
-- [examples/run-1/](examples/run-1/): run metadata, the coverage ledger, two findings, the agent log with
+- [examples/run-1/](skills/ui-audit/examples/run-1/): run metadata, the coverage ledger, two findings, the agent log with
   the permission check, model routing, two escalations, one consult that went to a judge panel, and the
   fallback panels;
-- [examples/run-1/fix/](examples/run-1/fix/): the fix log and fix agent log for the confirmed finding,
+- [examples/run-1/fix/](skills/ui-audit/examples/run-1/fix/): the fix log and fix agent log for the confirmed finding,
   ready for review and not pushed;
-- [examples/run-1/COVERAGE.excerpt.md](examples/run-1/COVERAGE.excerpt.md): the run statement, the
+- [examples/run-1/COVERAGE.excerpt.md](skills/ui-audit/examples/run-1/COVERAGE.excerpt.md): the run statement, the
   agents, models and budget part and the visual changes part of COVERAGE.md.
 
-[examples/README.md](examples/README.md) walks through the run and gives the commands that validate every
+[examples/README.md](skills/ui-audit/examples/README.md) walks through the run and gives the commands that validate every
 file. In short, from the skill folder: `npm run validate:example`.
 
 ## Outputs
@@ -339,7 +314,7 @@ A full audit writes to `<output_root>/<repo>/run-<N>/`, outside your repository 
 | `FINDINGS-DETAIL.md` | every confirmed record in full, then improvements and positive patterns |
 | `NEEDS-VALIDATION.md` | the plans that would settle each lead |
 | `COVERAGE.md` | run statement, coverage per unit, agents, models and budget (with agent minutes by phase), visual changes |
-| `findings.json` | decided records (schema: [report-schema.json](report-schema.json)) |
+| `findings.json` | decided records (schema: [report-schema.json](skills/ui-audit/report-schema.json)) |
 | `coverage-ledger.json` | every unit and its state |
 | `run-metadata.json` | setup, topology proofs, cap, reserves, models declared and observed |
 | `agent-log.json`, `fingerprint-agents.json` | every invocation, escalation, dialogue and fallback; agent disjointness |
@@ -381,7 +356,8 @@ promoting a run's captures; only a baseline you approved can back a finding.
 ## Development
 
 ```sh
-npm ci                     # installs playwright-core 1.63.0 into this folder
+cd skills/ui-audit
+npm ci                     # installs playwright-core 1.63.0 into the skill folder
 npm test                   # every node --test file: validators, probe, diff, orchestration, detection, static server, promotion, docs
 npm run validate:example   # the validators against examples/
 ```
@@ -392,16 +368,20 @@ npm run validate:example   # the validators against examples/
   keys, description at most 1,024 characters) and size (under 500 lines) [rule: CLAUDE-01, CLAUDE-02,
   CLAUDE-04, CLAUDE-06], that every file `npm test` lists exists, that the plugin manifest, the marketplace
   entry and `package.json` carry the same name and version, rule citations against
-  [SOURCES.md](SOURCES.md), relative links, the routing table against `scripts/orchestrate.mjs`, the budget
+  [SOURCES.md](skills/ui-audit/SOURCES.md), relative links, the routing table against `scripts/orchestrate.mjs`, the budget
   tables of SKILL.md, ORCHESTRATION.md, RUN-METADATA.md and this README against `budgetGate`, and the absence
   of environment files and attribution lines. `validate-orchestration.test.cjs` runs
   `npm run validate:example`.
 - Before a release, `claude plugin validate ./` should pass (it needs the Claude Code CLI, so it is not a
   node test), and the `version` in `package.json` and `.claude-plugin/plugin.json` is bumped together.
-- Wording in the skill files is original, apart from the adapted portions [NOTICE](NOTICE) lists; thresholds cite rule ids from SOURCES.md, never raw links.
+- Wording in the skill files is original, apart from the adapted portions [NOTICE](skills/ui-audit/NOTICE) lists; thresholds cite rule ids from SOURCES.md, never raw links.
 
 ## Changes
 
+- **2.5.1.** The repository follows the layout of other published skills: the skill lives in
+  `skills/ui-audit/`, and the repository root holds only this README, the license, the plugin manifests and
+  CI. Install with `npx skills add` or as a plugin; the manifests name the skill folder, the homepage and the
+  repository.
 - **2.5.0.** Lessons from the second real run. Phase 3 starts by grouping candidates by root cause with
   `scripts/group-candidates.mjs` (same or nearby trace sink) and merging the ones that share it, so one
   shared-component defect reported by several hunters is verified once; the second run verified twelve such
@@ -453,4 +433,4 @@ execution, remediation, confidence), a few validator input-hygiene patterns and 
 conventions are adapted from security-audit-skill (MIT, Copyright (c) 2025-2026 Cloudflare, Inc.), whose MIT
 notice is reproduced in NOTICE. The screenshot comparison reimplements the published YIQ colour
 difference and anti-aliasing detection methods popularised by pixelmatch. Details and third-party notices are
-in [NOTICE](NOTICE).
+in [NOTICE](skills/ui-audit/NOTICE).

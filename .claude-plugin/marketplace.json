@@ -8,7 +8,13 @@
       "name": "ui-audit",
       "source": "./",
       "description": "Audit, QA and optionally fix how a web app works and looks, with a budgeted team of subagents on a local, disposable copy of the app.",
-      "version": "2.5.0"
+      "version": "2.5.1",
+      "skills": [
+        "./skills/ui-audit"
+      ],
+      "homepage": "https://github.com/Eremitia/ui-audit-skill",
+      "repository": "https://github.com/Eremitia/ui-audit-skill",
+      "license": "MIT"
     }
   ]
 }

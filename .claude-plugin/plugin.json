@@ -1,6 +1,6 @@
 {
   "name": "ui-audit",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "Audit, QA and optionally fix how a web app works and looks, with a budgeted team of subagents on a local, disposable copy of the app.",
   "author": {
     "name": "Eremitia"

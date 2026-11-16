@@ -1,6 +1,6 @@
 {
   "name": "ui-audit-skill",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "private": true,
   "description": "Multi-agent UI and functional audit skill for coding agents; loopback-only browser probe and validators.",
   "license": "MIT",

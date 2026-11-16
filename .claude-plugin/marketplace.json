@@ -1,5 +1,6 @@
 {
   "name": "ui-audit-marketplace",
+  "description": "ui-audit: audit, QA and optionally fix how a web app works and looks, with a budgeted team of subagents on a local, disposable copy of the app.",
   "owner": {
     "name": "Eremitia"
   },
@@ -8,7 +9,7 @@
       "name": "ui-audit",
       "source": "./",
       "description": "Audit, QA and optionally fix how a web app works and looks, with a budgeted team of subagents on a local, disposable copy of the app.",
-      "version": "2.5.1",
+      "version": "2.5.2",
       "skills": [
         "./skills/ui-audit"
       ],

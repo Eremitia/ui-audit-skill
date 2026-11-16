@@ -378,6 +378,8 @@ npm run validate:example   # the validators against examples/
 
 ## Changes
 
+- **2.5.2.** The plugin has an icon, a coverage grid with one confirmed unit, and the marketplace a
+  description, so `claude plugin validate` passes with no warnings.
 - **2.5.1.** The repository follows the layout of other published skills: the skill lives in
   `skills/ui-audit/`, and the repository root holds only this README, the license, the plugin manifests and
   CI. Install with `npx skills add` or as a plugin; the manifests name the skill folder, the homepage and the

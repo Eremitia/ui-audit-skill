@@ -1,0 +1,159 @@
+{
+  "schema": "ui-audit/fix-log@1",
+  "run_id": "run-1",
+  "fix_run_id": "fix-1",
+  "status": "awaiting_approval",
+  "agent_log": "fix/agent-log.json",
+  "cap": 30,
+  "spent": 3,
+  "agents_breakdown": {
+    "fixers": 1,
+    "fixer_continuations": 1,
+    "reverifiers": 1,
+    "escalations": 0,
+    "panels": 0,
+    "schema_repairs": 0,
+    "unspent": 27
+  },
+  "approved_selection_at": "2026-10-16T14:02:00Z",
+  "approved_selection_text": "Fix the checkout double submit only; leave the cart rounding until we decide the rule.",
+  "hooks": {
+    "detected": [],
+    "mode": "none",
+    "approved_text": null,
+    "pre_push": false
+  },
+  "tracked_env_files": [],
+  "permission_guard": {
+    "offered": true,
+    "accepted": false,
+    "file": null,
+    "rules": [],
+    "added_at": null,
+    "removed_at": null
+  },
+  "prep_network": null,
+  "push_approval": null,
+  "git_rules": {
+    "base_branch": "develop",
+    "branch_pattern": "fix/<short-description>",
+    "protected_branches": [
+      "main",
+      "develop"
+    ],
+    "one_change_per_branch": true,
+    "commit_format": "fix(<scope>): <summary>",
+    "commit_language": "en",
+    "attribution_trailers": "forbidden",
+    "pr_target": "develop",
+    "merge_method": "squash",
+    "required_checks": [
+      "typecheck",
+      "lint",
+      "test"
+    ],
+    "tests_with_fixes": "regression_test_first",
+    "sources": [
+      {
+        "rule": "Branch from develop; never commit to main or develop.",
+        "file": "CONTRIBUTING.md",
+        "line": 8
+      },
+      {
+        "rule": "Commit messages use type(scope): summary in English.",
+        "file": "CONTRIBUTING.md",
+        "line": 15
+      },
+      {
+        "rule": "No attribution trailers in commits or pull requests.",
+        "file": "CONTRIBUTING.md",
+        "line": 18
+      },
+      {
+        "rule": "Write the failing test first when fixing a bug.",
+        "file": "AGENTS.md",
+        "line": 22
+      },
+      {
+        "rule": "Pull requests target develop and are squash-merged.",
+        "file": "CONTRIBUTING.md",
+        "line": 27
+      }
+    ]
+  },
+  "fixes": [
+    {
+      "id": "fix-01",
+      "fingerprints": [
+        "checkout/double-submit/checkout-dialog/order-created-twice"
+      ],
+      "class": "logic",
+      "task_kind": "fix_logic",
+      "model": "sonnet",
+      "effort": "high",
+      "fixer_agent": "x1-checkout",
+      "branch": "fix/checkout-double-submit",
+      "base": "develop",
+      "base_commit": "4f1c2a9e7b6d5c3a2f1e0d9c8b7a6f5e4d3c2b1a",
+      "worktree": "worktrees/fix-01",
+      "superseded_branches": [],
+      "red_test": {
+        "command": "pnpm run test -- src/features/checkout/placeOrder.test.ts",
+        "exit_code": 1,
+        "log": "fix/fix-01/red.log"
+      },
+      "commits": [
+        {
+          "sha": "9b8a7c6d5e4f30211203f4e5d6c7b8a9f0e1d2c3",
+          "message": "fix(checkout): ignore a second Place order tap while the first is pending\n\nOn a slow connection a second tap inside the pending window created a second\norder and a second charge. The button now disables while the request is\npending, and createOrder deduplicates requests by an idempotency key.\n\nCloses the ui-audit finding checkout/double-submit/checkout-dialog/order-created-twice.",
+          "made_in": "host"
+        }
+      ],
+      "checks": [
+        {
+          "name": "typecheck",
+          "command": "pnpm run typecheck",
+          "exit_code": 0,
+          "log": "fix/fix-01/typecheck.log"
+        },
+        {
+          "name": "lint",
+          "command": "pnpm run lint",
+          "exit_code": 0,
+          "log": "fix/fix-01/lint.log"
+        },
+        {
+          "name": "test",
+          "command": "pnpm run test",
+          "exit_code": 0,
+          "log": "fix/fix-01/test.log"
+        }
+      ],
+      "containment": {
+        "checked": true,
+        "violation": null
+      },
+      "reverify": {
+        "agent": "y1-checkout",
+        "task_kind": "fix_reverify_strong",
+        "result": "fixed",
+        "artifacts": [
+          "agents/y1-checkout/artifacts/probe/checkout.m390.light.json",
+          "agents/y1-checkout/artifacts/db-count.txt"
+        ],
+        "visual_diff": "fix/fix-01/visual/diff-summary.json"
+      },
+      "pr": {
+        "state": "proposed",
+        "title": "fix(checkout): ignore a second Place order tap while the first is pending",
+        "body_path": "fix/fix-01/PR.md",
+        "approved_at": null,
+        "approved_text": null,
+        "remote": null,
+        "url": null
+      },
+      "status": "ready",
+      "notes": []
+    }
+  ]
+}

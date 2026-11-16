@@ -1,0 +1,409 @@
+[
+  {
+    "coverage_id": "src%2Fcomponents%2Fcart%2FCartDrawer.tsx%23CartDrawer::src%2Ffeatures%2Fcart%2Ftotals.ts%23cartTotal::src%2Ffeatures%2Fcart::FUNCTIONAL-FLOWS.md%23Figure%20consistency%20across%20screens::role%3Dcustomer%3Bvp%3Dm390%3Btheme%3Dlight%3Bdata%3Dtypical",
+    "canonical_refs": {
+      "surface": "src/components/cart/CartDrawer.tsx#CartDrawer",
+      "expectation": "src/features/cart/totals.ts#cartTotal",
+      "domain": "src/features/cart",
+      "lens": "FUNCTIONAL-FLOWS.md#Figure consistency across screens",
+      "context": "role=customer;vp=m390;theme=light;data=typical"
+    },
+    "surface": "Cart drawer",
+    "expectation": "The cart drawer total equals the checkout total for the same cart (cartTotal)",
+    "domain": "cart",
+    "lens": "Figure consistency across screens",
+    "context": "role=customer;vp=m390;theme=light;data=typical",
+    "starting_paths": [
+      "src/components/cart/CartDrawer.tsx",
+      "src/features/cart/totals.ts",
+      "src/pages/CheckoutPage.tsx"
+    ],
+    "ordinary_lens_block": "LENSES.md#Data consistency across screens",
+    "selected_companion_blocks": [
+      "FUNCTIONAL-FLOWS.md#Figure consistency across screens",
+      "FUNCTIONAL-FLOWS.md#Core discipline",
+      "FUNCTIONAL-FLOWS.md#Universal moves",
+      "FUNCTIONAL-FLOWS.md#Validation rules"
+    ],
+    "excluded_blocks": [],
+    "prior_status": "none",
+    "attempts": [],
+    "wave": 1,
+    "status": "candidate",
+    "agent_id": "h2-cart",
+    "reviewed_paths": [
+      "src/components/cart/CartDrawer.tsx",
+      "src/features/cart/totals.ts",
+      "src/features/promotions/applyPromo.ts"
+    ],
+    "checks": [
+      {
+        "agent_id": "h2-cart",
+        "reviewed_paths": [
+          "src/components/cart/CartDrawer.tsx",
+          "src/features/cart/totals.ts"
+        ],
+        "expectation": "drawer total equals checkout total for the same cart",
+        "method": "browser",
+        "variant": "role=customer;vp=m390;theme=light;data=typical",
+        "result": "drawer shows 41.97, checkout shows 41.96 for 3 x 13.99 with the 10 percent bundle promotion",
+        "artifact": "agents/h2-cart/artifacts/probe/cart.m390.light.json"
+      },
+      {
+        "agent_id": "q1-cart-state",
+        "reviewed_paths": [
+          "src/features/promotions/applyPromo.ts"
+        ],
+        "expectation": "consult dlg-01: is the drawer figure a stale state or a rounding rule",
+        "method": "source",
+        "variant": null,
+        "result": "the drawer rounds the promotion per line, checkout per order; no stale state found",
+        "artifact": null
+      }
+    ],
+    "result_fingerprints": [
+      "cart/figure-consistency/cart-drawer/total-differs-from-checkout"
+    ],
+    "unresolved": [
+      "dialogue_unresolved: dlg-01 ended judged_neither; the record stays needs_validation"
+    ],
+    "task_kind": "hunt_business"
+  },
+  {
+    "coverage_id": "src%2Fpages%2FCatalogPage.tsx%23%2F::PR-01::src%2Ffeatures%2Fcatalog::RESPONSIVE-AND-LAYOUT.md%23Horizontal%20overflow%20and%20clipping::matrix%3Acore%3Brole%3Dcustomer%3Bdata%3Dtypical",
+    "canonical_refs": {
+      "surface": "src/pages/CatalogPage.tsx#/",
+      "expectation": "PR-01",
+      "domain": "src/features/catalog",
+      "lens": "RESPONSIVE-AND-LAYOUT.md#Horizontal overflow and clipping",
+      "context": "matrix:core;role=customer;data=typical"
+    },
+    "surface": "Catalog /",
+    "expectation": "No horizontal overflow at any supported width (PR-01, CONTRIBUTING.md)",
+    "domain": "catalog",
+    "lens": "Horizontal overflow and clipping",
+    "context": "matrix:core;role=customer;data=typical",
+    "starting_paths": [
+      "src/pages/CatalogPage.tsx",
+      "src/components/catalog/ProductGrid.tsx"
+    ],
+    "ordinary_lens_block": null,
+    "selected_companion_blocks": [
+      "RESPONSIVE-AND-LAYOUT.md#Horizontal overflow and clipping",
+      "RESPONSIVE-AND-LAYOUT.md#Core discipline",
+      "RESPONSIVE-AND-LAYOUT.md#Universal moves",
+      "RESPONSIVE-AND-LAYOUT.md#Validation rules"
+    ],
+    "excluded_blocks": [],
+    "prior_status": "none",
+    "attempts": [],
+    "wave": 2,
+    "status": "covered",
+    "agent_id": "h3-catalog",
+    "reviewed_paths": [
+      "src/components/catalog/ProductGrid.tsx"
+    ],
+    "checks": [
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=m320;theme=light",
+        "result": "scrollWidth 320, clientWidth 320; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.m320.light.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=m320;theme=dark",
+        "result": "scrollWidth 320, clientWidth 320; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.m320.dark.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=m390;theme=light",
+        "result": "scrollWidth 390, clientWidth 390; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.m390.light.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=m390;theme=dark",
+        "result": "scrollWidth 390, clientWidth 390; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.m390.dark.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=t768;theme=light",
+        "result": "scrollWidth 768, clientWidth 768; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.t768.light.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=t768;theme=dark",
+        "result": "scrollWidth 768, clientWidth 768; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.t768.dark.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=d1440;theme=light",
+        "result": "scrollWidth 1440, clientWidth 1440; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.d1440.light.json"
+      },
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/ProductGrid.tsx"
+        ],
+        "expectation": "documentElement.scrollWidth <= clientWidth + 1",
+        "method": "browser",
+        "variant": "vp=d1440;theme=dark",
+        "result": "scrollWidth 1440, clientWidth 1440; no element past the right edge",
+        "artifact": "agents/h3-catalog/artifacts/probe/catalog.d1440.dark.json"
+      }
+    ],
+    "result_fingerprints": [],
+    "unresolved": [],
+    "task_kind": "hunt_standard"
+  },
+  {
+    "coverage_id": "src%2Fpages%2FCheckoutPage.tsx%23%2Fcheckout::RULE%3AVITALS-03::src%2Ffeatures%2Fcheckout::PERFORMANCE.md%23Interaction%20latency%20and%20long%20tasks::role%3Dcustomer%3Bvp%3Dm390%3Bnet%3Dslow4g",
+    "canonical_refs": {
+      "surface": "src/pages/CheckoutPage.tsx#/checkout",
+      "expectation": "RULE:VITALS-03",
+      "domain": "src/features/checkout",
+      "lens": "PERFORMANCE.md#Interaction latency and long tasks",
+      "context": "role=customer;vp=m390;net=slow4g"
+    },
+    "surface": "Checkout /checkout",
+    "expectation": "Interactions stay within the INP good threshold (VITALS-03)",
+    "domain": "checkout",
+    "lens": "Interaction latency and long tasks",
+    "context": "role=customer;vp=m390;net=slow4g",
+    "starting_paths": [
+      "src/pages/CheckoutPage.tsx",
+      "src/features/checkout/AddressForm.tsx"
+    ],
+    "ordinary_lens_block": null,
+    "selected_companion_blocks": [
+      "PERFORMANCE.md#Interaction latency and long tasks",
+      "PERFORMANCE.md#Core discipline",
+      "PERFORMANCE.md#Universal moves",
+      "PERFORMANCE.md#Validation rules"
+    ],
+    "excluded_blocks": [],
+    "prior_status": "none",
+    "attempts": [],
+    "wave": 3,
+    "status": "blocked",
+    "agent_id": "h4-perf",
+    "reviewed_paths": [
+      "src/features/checkout/AddressForm.tsx"
+    ],
+    "checks": [
+      {
+        "agent_id": "h4-perf",
+        "reviewed_paths": [
+          "src/features/checkout/AddressForm.tsx"
+        ],
+        "expectation": "lab INP of typing into the postcode field at most 200 ms (median of 5 cold runs)",
+        "method": "browser",
+        "variant": "role=customer;vp=m390;net=slow4g",
+        "result": "median 236 ms, worst 412 ms; long animation frames attributed to two different scripts in alternate runs",
+        "artifact": "agents/h4-perf/artifacts/probe/checkout.m390.inp.json"
+      }
+    ],
+    "result_fingerprints": [],
+    "unresolved": [
+      "needs_stronger_model: the hunter could not tell which of two long-animation-frame scripts causes the slow input and asked for the fable tier, which is declared unavailable",
+      "escalation_budget_exhausted: esc-02 needed an opus panel (worst case 5) and the orchestration reserve had no free calls"
+    ],
+    "task_kind": "hunt_performance"
+  },
+  {
+    "coverage_id": "src%2Fpages%2FCheckoutPage.tsx%23%2Fcheckout::src%2Ffeatures%2Fcheckout%2FplaceOrder.ts%23placeOrder::src%2Ffeatures%2Fcheckout::FUNCTIONAL-FLOWS.md%23Double%20submit%20and%20idempotent%20actions::role%3Dcustomer%3Bvp%3Dm390%3Btheme%3Dlight%3Binput%3Dtouch%3Bnet%3Dslow4g%3Bdata%3Dtypical",
+    "canonical_refs": {
+      "surface": "src/pages/CheckoutPage.tsx#/checkout",
+      "expectation": "src/features/checkout/placeOrder.ts#placeOrder",
+      "domain": "src/features/checkout",
+      "lens": "FUNCTIONAL-FLOWS.md#Double submit and idempotent actions",
+      "context": "role=customer;vp=m390;theme=light;input=touch;net=slow4g;data=typical"
+    },
+    "surface": "Checkout /checkout",
+    "expectation": "One tap on Place order creates exactly one order (placeOrder)",
+    "domain": "checkout",
+    "lens": "Double submit and idempotent actions",
+    "context": "role=customer;vp=m390;theme=light;input=touch;net=slow4g;data=typical",
+    "starting_paths": [
+      "src/pages/CheckoutPage.tsx",
+      "src/features/checkout/placeOrder.ts",
+      "api/orders.ts"
+    ],
+    "ordinary_lens_block": null,
+    "selected_companion_blocks": [
+      "FUNCTIONAL-FLOWS.md#Double submit and idempotent actions",
+      "FUNCTIONAL-FLOWS.md#Core discipline",
+      "FUNCTIONAL-FLOWS.md#Universal moves",
+      "FUNCTIONAL-FLOWS.md#Validation rules"
+    ],
+    "excluded_blocks": [],
+    "prior_status": "none",
+    "attempts": [],
+    "wave": 2,
+    "status": "candidate",
+    "agent_id": "h1-checkout",
+    "reviewed_paths": [
+      "api/orders.ts",
+      "src/features/checkout/PlaceOrderButton.tsx"
+    ],
+    "checks": [
+      {
+        "agent_id": "h1-checkout",
+        "reviewed_paths": [
+          "src/features/checkout/PlaceOrderButton.tsx"
+        ],
+        "expectation": "A second tap inside the pending window adds no order",
+        "method": "browser",
+        "variant": "role=customer;vp=m390;theme=light;input=touch;net=slow4g;data=typical",
+        "result": "two POST /api/orders requests 52 ms apart; two order rows shown in the account page",
+        "artifact": "agents/h1-checkout/artifacts/probe/checkout.m390.light.json"
+      },
+      {
+        "agent_id": "h1-checkout",
+        "reviewed_paths": [
+          "api/orders.ts"
+        ],
+        "expectation": "orders table count rises by exactly one",
+        "method": "test",
+        "variant": "role=customer;vp=m390;theme=light;input=touch;net=slow4g;data=typical",
+        "result": "count before 12, after 14 in 3 of 3 isolated reruns (product race)",
+        "artifact": "agents/h1-checkout/artifacts/db-count.txt"
+      }
+    ],
+    "result_fingerprints": [
+      "checkout/double-submit/checkout-dialog/order-created-twice"
+    ],
+    "unresolved": [],
+    "task_kind": "hunt_standard"
+  },
+  {
+    "coverage_id": "src%2Fpages%2FProductPage.tsx%23%2Fproduct%2F%3Aid::WCAG22%232.1.1::src%2Ffeatures%2Fcatalog::ACCESSIBILITY.md%23Keyboard%20operation%20and%20focus%20order::role%3Dcustomer%3Bvp%3Dd1440%3Btheme%3Dlight%3Binput%3Dkeyboard",
+    "canonical_refs": {
+      "surface": "src/pages/ProductPage.tsx#/product/:id",
+      "expectation": "WCAG22#2.1.1",
+      "domain": "src/features/catalog",
+      "lens": "ACCESSIBILITY.md#Keyboard operation and focus order",
+      "context": "role=customer;vp=d1440;theme=light;input=keyboard"
+    },
+    "surface": "Product page /product/:id",
+    "expectation": "Every control works from the keyboard (WCAG 2.2 SC 2.1.1)",
+    "domain": "catalog",
+    "lens": "Keyboard operation and focus order",
+    "context": "role=customer;vp=d1440;theme=light;input=keyboard",
+    "starting_paths": [
+      "src/pages/ProductPage.tsx",
+      "src/components/catalog/VariantPicker.tsx"
+    ],
+    "ordinary_lens_block": null,
+    "selected_companion_blocks": [
+      "ACCESSIBILITY.md#Keyboard operation and focus order",
+      "ACCESSIBILITY.md#Core discipline",
+      "ACCESSIBILITY.md#Universal moves",
+      "ACCESSIBILITY.md#Validation rules"
+    ],
+    "excluded_blocks": [],
+    "prior_status": "none",
+    "attempts": [],
+    "wave": 2,
+    "status": "covered",
+    "agent_id": "h3-catalog",
+    "reviewed_paths": [
+      "src/components/catalog/VariantPicker.tsx"
+    ],
+    "checks": [
+      {
+        "agent_id": "h3-catalog",
+        "reviewed_paths": [
+          "src/components/catalog/VariantPicker.tsx"
+        ],
+        "expectation": "Tab and Shift+Tab reach every interactive element; no trap",
+        "method": "browser",
+        "variant": "role=customer;vp=d1440;theme=light;input=keyboard",
+        "result": "14 of 14 interactive elements reached in visual order; Escape closes the size guide and returns focus",
+        "artifact": "agents/h3-catalog/artifacts/probe/product.d1440.keyboard.json"
+      }
+    ],
+    "result_fingerprints": [],
+    "unresolved": [],
+    "task_kind": "hunt_standard"
+  },
+  {
+    "coverage_id": "src%2Fpages%2Fadmin%2FOrdersPage.tsx%23%2Fadmin%2Forders::PR-02::src%2Ffeatures%2Fadmin::FUNCTIONAL-FLOWS.md%23Search%2C%20filter%2C%20sort%20and%20pagination::role%3Dadmin%3Bvp%3Dd1440%3Btheme%3Dlight%3Bdata%3Dheavy",
+    "canonical_refs": {
+      "surface": "src/pages/admin/OrdersPage.tsx#/admin/orders",
+      "expectation": "PR-02",
+      "domain": "src/features/admin",
+      "lens": "FUNCTIONAL-FLOWS.md#Search, filter, sort and pagination",
+      "context": "role=admin;vp=d1440;theme=light;data=heavy"
+    },
+    "surface": "Admin orders /admin/orders",
+    "expectation": "Filters and pagination keep the result set consistent (PR-02)",
+    "domain": "admin",
+    "lens": "Search, filter, sort and pagination",
+    "context": "role=admin;vp=d1440;theme=light;data=heavy",
+    "starting_paths": [
+      "src/pages/admin/OrdersPage.tsx"
+    ],
+    "ordinary_lens_block": null,
+    "selected_companion_blocks": [
+      "FUNCTIONAL-FLOWS.md#Search, filter, sort and pagination",
+      "FUNCTIONAL-FLOWS.md#Core discipline",
+      "FUNCTIONAL-FLOWS.md#Universal moves",
+      "FUNCTIONAL-FLOWS.md#Validation rules"
+    ],
+    "excluded_blocks": [],
+    "prior_status": "none",
+    "attempts": [],
+    "wave": 2,
+    "status": "deferred",
+    "agent_id": null,
+    "reviewed_paths": [],
+    "checks": [],
+    "result_fingerprints": [],
+    "unresolved": [
+      "agent_cap_reached: the planning estimate priced 42 calls for a cap of 40; the owner chose to defer the admin orders group"
+    ],
+    "task_kind": "hunt_standard"
+  }
+]

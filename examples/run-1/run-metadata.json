@@ -1,0 +1,385 @@
+{
+  "schema": "ui-audit/run-metadata@3",
+  "skill_version": "2.0.0",
+  "run_id": "run-1",
+  "repo": "demo-store",
+  "target": "<abs path to the target>",
+  "host": {
+    "os": "linux",
+    "claude_code_version": "2.1.296",
+    "node_version": "v24.18.0",
+    "agent_permissions": "Added ~/ui-audit-skill with /add-dir and allowed the probe and the podman exec command for this session."
+  },
+  "source_ref": {
+    "commit": "4f1c2a9e7b6d5c3a2f1e0d9c8b7a6f5e4d3c2b1a",
+    "branch": "develop",
+    "dirty": false,
+    "dirty_note": null
+  },
+  "report_language": "en",
+  "profile": "standard",
+  "scope": {
+    "kind": "full",
+    "paths": [],
+    "routes": [],
+    "lenses": [],
+    "diff": null,
+    "excluded": [
+      ".claude/**",
+      ".agents/**"
+    ]
+  },
+  "budget": 40,
+  "budget_note": "The planning estimate priced 43 calls for the cap of 40 because strong verification is routed to fable, which is declared unavailable, so each strong verification is priced as an opus panel (worst case 5). The owner answered: \"Keep 40 and skip the admin orders screen this time.\" The narrowed plan was still priced at 41 worst-case calls; the cap of 40 held, and the admin orders unit is deferred with agent_cap_reached.",
+  "orchestration": {
+    "agent_cap": 40,
+    "cap_source": "config",
+    "reserve_cap": 40,
+    "reserve": {
+      "reconnaissance": 4,
+      "critics": 2,
+      "validation": 2,
+      "orchestration": 7
+    },
+    "reserve_floor": 6,
+    "reserve_floor_met": true,
+    "setup_calls": 1,
+    "orchestration_reserve_fraction": 0.17,
+    "max_parallel_agents": 4,
+    "dialogue_max_rounds": 2,
+    "escalation_max_steps": 2,
+    "allow_max_effort": false,
+    "allow_fable_usage_credits": false,
+    "effort_supported": true,
+    "effort_forced": null,
+    "routing_mode": "per_call",
+    "forced_model": null,
+    "named_agents": true,
+    "resume_supported": true,
+    "delegation": "agent_tool",
+    "config_source": "setup_question",
+    "config_path": "~/.claude/skills/ui-audit/ui-audit.config.json",
+    "owner_plan_note": "API key, team budget",
+    "models": {
+      "haiku": {
+        "declared": "assume_available",
+        "observed": "available",
+        "first_evidence_seq": 1
+      },
+      "sonnet": {
+        "declared": "probe",
+        "observed": "available",
+        "first_evidence_seq": 2
+      },
+      "opus": {
+        "declared": "probe",
+        "observed": "available",
+        "first_evidence_seq": 7
+      },
+      "fable": {
+        "declared": "unavailable",
+        "observed": "unavailable",
+        "first_evidence_seq": null
+      }
+    }
+  },
+  "planning_estimate": {
+    "units": 6,
+    "hunters": 6,
+    "hunter_calls": 6,
+    "waves": 4,
+    "critics": 5,
+    "critic_calls": 5,
+    "verifiers": 4,
+    "verifier_calls": 20,
+    "orchestration_reserve": 7,
+    "total_calls": 43,
+    "cap": 40,
+    "fits": false,
+    "availability": {
+      "haiku": "untested",
+      "sonnet": "untested",
+      "opus": "untested",
+      "fable": "unavailable"
+    },
+    "by_model": {
+      "haiku": 3,
+      "sonnet": 10,
+      "opus": 23,
+      "fable": 0
+    },
+    "panel_calls": 16,
+    "suggestion": "Raise the cap to 43, or narrow the scope: deferring the admin orders group (1 unit, 1 hunter, 1 wave critic) brings the estimate to 41 calls.",
+    "uncovered_if_capped": {
+      "units": 1,
+      "candidates": 0
+    },
+    "shown_to_user_at": "2026-10-16T09:52:00Z"
+  },
+  "agents_spent": 27,
+  "agents_breakdown": {
+    "reconnaissance": 5,
+    "hunters": 6,
+    "critics": 4,
+    "candidate_verifiers": 0,
+    "record_verifiers": 0,
+    "replacement_verifiers": 0,
+    "consults": 3,
+    "judges": 0,
+    "escalations": 1,
+    "panels": 8,
+    "schema_repairs": 0,
+    "unspent": 13
+  },
+  "execution_policy": "local-loopback-disposable-data",
+  "project_detect": "tools/project-detect.json",
+  "app": {
+    "framework": "vite",
+    "host": {
+      "kind": "container",
+      "vm": "demo-store-audit",
+      "path": "/srv/build/run-1"
+    },
+    "build_command": "pnpm run build",
+    "start_command": "pnpm run preview --port 4173 --strictPort --host 127.0.0.1",
+    "serve_kind": "script",
+    "build_mode": "production",
+    "base_url": "http://127.0.0.1:4173",
+    "ready_path": "/",
+    "env_names": [
+      "API_PORT",
+      "DATABASE_FILE",
+      "NODE_ENV",
+      "DO_NOT_TRACK"
+    ],
+    "database": {
+      "engine": "sqlite-3",
+      "location": "/srv/data/run-1.db (inside the container)",
+      "disposable": true,
+      "reset_command": "tools/reset-db.sh",
+      "count_command": "tools/db-count.sh"
+    }
+  },
+  "browser": {
+    "driver": "cdp",
+    "executable": "<abs path to the browser executable>",
+    "version": "155.0.8059.80",
+    "engines": [
+      "chromium"
+    ],
+    "headless": true,
+    "choice_reason": "no download needed; local Chromium build"
+  },
+  "sandbox": {
+    "topology": "container-loopback",
+    "vm_networking": null,
+    "proof": {
+      "ready_probe": {
+        "command": "curl -s -o /dev/null -w %{http_code} http://127.0.0.1:4173/",
+        "result": "200",
+        "at": "2026-10-16T09:41:00Z"
+      },
+      "egress_probe": {
+        "command": "podman exec demo-store-audit node -e \"fetch('https://example.com').then(()=>console.log('open'),()=>console.log('blocked'))\"",
+        "result": "blocked",
+        "at": "2026-10-16T09:41:30Z"
+      },
+      "bind_probe": {
+        "command": "podman port demo-store-audit",
+        "result": "4173/tcp -> 127.0.0.1:4173 only",
+        "at": "2026-10-16T09:41:40Z"
+      }
+    },
+    "copy_manifest": [
+      "api",
+      "index.html",
+      "package.json",
+      "pnpm-lock.yaml",
+      "public",
+      "src",
+      "tsconfig.json",
+      "vite.config.ts"
+    ],
+    "prep_network": {
+      "approved_at": "2026-10-16T09:20:00Z",
+      "hosts": [
+        "registry.npmjs.org"
+      ]
+    },
+    "max_parallel_browsers": 2,
+    "host_facts": {
+      "cpu": "8-core x86_64 laptop CPU",
+      "total_memory": "16 GiB",
+      "free_memory_at_perf_wave": "7.9 GiB",
+      "vm_limits": "container: 2 CPUs, 4 GiB",
+      "cpu_benchmark_ms": 41.6
+    },
+    "limits": {
+      "one_shot_wall_clock_s": 900,
+      "services_wall_clock_s": 28800,
+      "memory": "4G",
+      "cpus": 2,
+      "processes": 512,
+      "file_size": "2G"
+    },
+    "environment": "allowlisted variables only, dummy values, telemetry disabled",
+    "target": "read-only bind mount of the build copy",
+    "writes": "run scratch, build copy and the disposable database only",
+    "notes": "rootless container with no network except port 4173 published to 127.0.0.1"
+  },
+  "visual_baseline": {
+    "baseline_id": null,
+    "approved": false,
+    "diff_summary": null,
+    "note": "No earlier baseline exists for demo-store; this run's sweep was offered as the first baseline.",
+    "promoted_id": "run-1",
+    "promoted_approved": true,
+    "promoted_approved_at": "2026-10-16T13:20:00Z"
+  },
+  "viewports": [
+    {
+      "id": "m320",
+      "width": 320,
+      "height": 568,
+      "dpr": 2,
+      "mobile": true,
+      "touch": true
+    },
+    {
+      "id": "m390",
+      "width": 390,
+      "height": 844,
+      "dpr": 3,
+      "mobile": true,
+      "touch": true
+    },
+    {
+      "id": "t768",
+      "width": 768,
+      "height": 1024,
+      "dpr": 2,
+      "mobile": true,
+      "touch": true
+    },
+    {
+      "id": "d1440",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "mobile": false,
+      "touch": false
+    }
+  ],
+  "themes": [
+    "light",
+    "dark",
+    "system"
+  ],
+  "matrices": {
+    "quick": {
+      "viewports": [
+        "m390",
+        "d1440"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ]
+    },
+    "core": {
+      "viewports": [
+        "m320",
+        "m390",
+        "t768",
+        "d1440"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ]
+    }
+  },
+  "network_profiles": {
+    "fast": null,
+    "slow4g": {
+      "latency_ms": 150,
+      "down_bps": 204800,
+      "up_bps": 96000,
+      "cpu_throttle": 4
+    },
+    "slow3g": {
+      "latency_ms": 2000,
+      "down_bps": 51200,
+      "up_bps": 51200,
+      "cpu_throttle": 4
+    },
+    "offline": {
+      "offline": true
+    },
+    "flaky": {
+      "base": "slow4g",
+      "cycle_ms": 4000,
+      "offline_ms": 1500
+    }
+  },
+  "personas": [
+    {
+      "role": "customer",
+      "label": "Customer",
+      "entry_route": "/",
+      "description": "Browses the catalog, fills a cart and pays with a saved card."
+    },
+    {
+      "role": "admin",
+      "label": "Store admin",
+      "entry_route": "/admin",
+      "description": "Manages products and orders."
+    }
+  ],
+  "fixtures": {
+    "procedure": "tools/fixtures.md",
+    "tenant_procedure": null,
+    "accounts_file": "fixtures/accounts.json",
+    "tenants_file": "fixtures/tenants.json",
+    "sessions_dir": "fixtures/sessions",
+    "data_states": [
+      "empty",
+      "one",
+      "typical",
+      "heavy",
+      "longtext"
+    ],
+    "spare_tenants": 6
+  },
+  "clock": {
+    "timezone": "America/New_York",
+    "client_time": "init-script-shift",
+    "server_time": "seeded-boundaries",
+    "server_process_tz": "UTC"
+  },
+  "shared_ui_files": [
+    "pnpm-lock.yaml",
+    "vite.config.ts",
+    "index.html",
+    "src/main.tsx",
+    "src/styles/global.css"
+  ],
+  "selected_companion_files": [
+    "ACCESSIBILITY.md",
+    "FUNCTIONAL-FLOWS.md",
+    "PERFORMANCE.md",
+    "RESPONSIVE-AND-LAYOUT.md"
+  ],
+  "prior_run_paths": [],
+  "prior_run_note": null,
+  "shared_file_owners": {
+    "findings.json": "parent"
+  },
+  "coverage_note": "Example run: six units only, to keep the example readable.",
+  "run_status": "complete",
+  "pause_reason": null,
+  "resumes": [],
+  "incomplete_reason": null,
+  "started_at": "2026-10-16T09:05:00Z",
+  "finished_at": "2026-10-16T13:25:00Z"
+}

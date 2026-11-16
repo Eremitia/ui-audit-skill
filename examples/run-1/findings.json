@@ -1,0 +1,228 @@
+[
+  {
+    "verdict": "needs_validation",
+    "fingerprint": "cart/figure-consistency/cart-drawer/total-differs-from-checkout",
+    "title": "Cart drawer total is one cent above the checkout total with the bundle promotion",
+    "description": "With three units of a 13.99 item and the 10 percent bundle promotion, the cart drawer shows 41.97 while checkout shows 41.96 for the same cart.",
+    "lens": "FUNCTIONAL-FLOWS.md#Figure consistency across screens",
+    "persona": {
+      "role": "customer",
+      "label": "Customer"
+    },
+    "surface": {
+      "route": "/cart",
+      "component": "CartDrawer",
+      "state": "drawer open, bundle promotion applied"
+    },
+    "context": {
+      "viewport": {
+        "id": "m390",
+        "width": 390,
+        "height": 844,
+        "dpr": 3
+      },
+      "theme": "light",
+      "input_modality": "any",
+      "network": "any",
+      "data_state": "typical"
+    },
+    "expectation": {
+      "source_kind": "business_rule",
+      "ref": "src/features/cart/totals.ts#cartTotal",
+      "statement": "Every screen shows the cart total that cartTotal computes for the same cart."
+    },
+    "claimed_root_cause": "CartDrawer rounds the promotion per line through applyPromo, while checkout rounds once per order in cartTotal; which rounding the store intends is not written down.",
+    "trace": [
+      {
+        "kind": "entrypoint",
+        "file": "src/components/cart/CartDrawer.tsx",
+        "line": 58,
+        "scope": "CartDrawer",
+        "description": "Sums line totals after a per-line promotion."
+      },
+      {
+        "kind": "sink",
+        "file": "src/features/promotions/applyPromo.ts",
+        "line": 22,
+        "scope": "applyPromo",
+        "description": "Rounds each discounted line to cents."
+      }
+    ],
+    "evidence": [
+      {
+        "file": "agents/h2-cart/artifacts/probe/cart.m390.light.json",
+        "line": 1,
+        "description": "Drawer total 41.97 and checkout total 41.96 for the same cart."
+      }
+    ],
+    "blockers": [
+      "Consult dlg-01 ended judged_neither: the opus judge panel found that neither the hunter nor the peer showed which rounding rule the store intends.",
+      "The fable tier that the judge route asks for is declared unavailable for this owner, so no stronger model could settle it."
+    ],
+    "validation_plan": {
+      "owner": "Confirm whether promotions round per line or per order, or rerun this consult when the fable tier is available.",
+      "local": "Add the intended rule to CONTRIBUTING.md as a project rule; a later run then confirms or rejects the record."
+    },
+    "stronger_model_needed": {
+      "tier": "fable",
+      "reason": "The decision depends on reading three modules for an unwritten business rule; the available opus judges agreed that the evidence does not settle it."
+    },
+    "deliberation": [
+      {
+        "id": "dlg-01",
+        "kind": "consult",
+        "outcome": "judged_neither",
+        "summary": "h2-cart asked whether the drawer figure is stale state or a different rounding rule. Peer q1-cart-state (resilience lens) found no stale state and said the difference is a rounding choice. h2-cart kept its position; the judge panel ruled neither."
+      },
+      {
+        "id": "fb-02",
+        "kind": "fallback_panel",
+        "outcome": "panel_agreed",
+        "summary": "The fable judge was replaced by two independent opus judges at xhigh effort; both ruled neither, so no deciding judge was needed."
+      },
+      {
+        "id": "fb-05",
+        "kind": "fallback_panel",
+        "outcome": "panel_agreed",
+        "summary": "Phase 5 record verification ran as two opus verifiers in place of fable; both kept the record as needs_validation."
+      }
+    ]
+  },
+  {
+    "verdict": "confirmed",
+    "fingerprint": "checkout/double-submit/checkout-dialog/order-created-twice",
+    "title": "A second tap on Place order creates a second order on a slow connection",
+    "description": "On a phone with a slow 4G profile, two taps on Place order about 50 ms apart create two orders and two card charges in the disposable data.",
+    "lens": "FUNCTIONAL-FLOWS.md#Double submit and idempotent actions",
+    "persona": {
+      "role": "customer",
+      "label": "Customer"
+    },
+    "surface": {
+      "route": "/checkout",
+      "component": "PlaceOrderButton",
+      "state": "review step, saved card selected"
+    },
+    "context": {
+      "viewport": {
+        "id": "m390",
+        "width": 390,
+        "height": 844,
+        "dpr": 3
+      },
+      "theme": "light",
+      "input_modality": "touch",
+      "network": "slow4g",
+      "data_state": "typical"
+    },
+    "expectation": {
+      "source_kind": "business_rule",
+      "ref": "src/features/checkout/placeOrder.ts#placeOrder",
+      "statement": "One activation of Place order creates exactly one order."
+    },
+    "root_cause": "PlaceOrderButton stays enabled while the request is pending and the orders endpoint accepts the same cart twice because it has no idempotency key.",
+    "trace": [
+      {
+        "kind": "entrypoint",
+        "file": "src/features/checkout/PlaceOrderButton.tsx",
+        "line": 31,
+        "scope": "onClick",
+        "description": "Calls placeOrder without disabling the button or tracking a pending request."
+      },
+      {
+        "kind": "propagation",
+        "file": "src/features/checkout/placeOrder.ts",
+        "line": 18,
+        "scope": "placeOrder",
+        "description": "Posts the cart with no idempotency key."
+      },
+      {
+        "kind": "sink",
+        "file": "api/orders.ts",
+        "line": 44,
+        "scope": "createOrder",
+        "description": "Inserts an order and charges the card for every request."
+      }
+    ],
+    "evidence": [
+      {
+        "file": "agents/h1-checkout/artifacts/probe/checkout.m390.light.json",
+        "line": 1,
+        "description": "Two POST requests 52 ms apart, both 201."
+      },
+      {
+        "file": "agents/h1-checkout/artifacts/db-count.txt",
+        "line": 1,
+        "description": "Orders count 12 before, 14 after."
+      },
+      {
+        "file": "agents/v1-checkout-a/artifacts/db-count.txt",
+        "line": 1,
+        "description": "Independent reproduction by a Phase 3 panel verifier: 3 of 3 runs created two orders."
+      }
+    ],
+    "conditions": [
+      {
+        "kind": "network_condition",
+        "description": "The slow 4G profile keeps the request pending long enough for the second tap."
+      }
+    ],
+    "execution": {
+      "method": "browser",
+      "build_mode": "production",
+      "topology": "container-loopback",
+      "user_perspective": "The customer taps once more because nothing seems to happen, then sees two orders and two charges.",
+      "inputs": [
+        "account customer-1",
+        "fixture cart three-items",
+        "agents/h1-checkout/scratch/in/checkout.json"
+      ],
+      "steps": [
+        "Open /checkout with the customer-1 session",
+        "Select the saved card",
+        "Tap Place order twice about 50 ms apart under slow4g",
+        "Count orders with the read-only count command"
+      ],
+      "expected_result": "One order and one charge.",
+      "observed_result": "Two orders and two charges in 3 of 3 runs.",
+      "artifacts": [
+        "agents/h1-checkout/artifacts/probe/checkout.m390.light.json",
+        "agents/h1-checkout/artifacts/db-count.txt",
+        "agents/v1-checkout-a/artifacts/db-count.txt"
+      ]
+    },
+    "remediation": {
+      "strategy": "Disable PlaceOrderButton while the request is pending and send an idempotency key that createOrder deduplicates.",
+      "regression_check": "A test that calls placeOrder twice with the same key and expects one order; a probe double-tap check under slow4g."
+    },
+    "severity": {
+      "impact": {
+        "score": "high",
+        "reason": "A customer is charged twice; support must refund by hand."
+      },
+      "reach": {
+        "score": "segment",
+        "reason": "Customers on slow connections who tap again while the request is pending."
+      },
+      "overall": "high"
+    },
+    "confidence": {
+      "score": "high",
+      "reason": "Reproduced by the hunter and independently by both Phase 3 panel verifiers, 3 of 3 runs each."
+    },
+    "deliberation": [
+      {
+        "id": "fb-01",
+        "kind": "fallback_panel",
+        "outcome": "panel_agreed",
+        "summary": "Strong candidate verification is routed to fable, which is declared unavailable; two independent opus verifiers at xhigh effort both reproduced the duplicate order and agreed on confirmed."
+      },
+      {
+        "id": "fb-04",
+        "kind": "fallback_panel",
+        "outcome": "panel_agreed",
+        "summary": "Phase 5 record verification ran as two opus verifiers in place of fable; both confirmed the record without changes."
+      }
+    ]
+  }
+]

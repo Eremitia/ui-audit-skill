@@ -1,0 +1,270 @@
+{
+  "$comment": "Example probe config (ui-audit/probe-config@3) for the fictional demo-store app, a Vite + React storefront with a cart and a checkout, personas customer and admin. Dummy values only, no secrets: account fields are referenced with valueFrom \"account:<account_key>.<field>\" (resolved from --accounts) and saved sessions with {\"session\": \"<tenant_id>/<role>\"} (resolved from --sessions). target 'disposable' with readyMarker makes the probe prove it reached the sandboxed build before any capture: only the audit fixtures publish the meta tag ui-audit-ready=audit-fixtures, so a developer's own server fails the check and nothing runs (exit 2). An app the owner already runs may be probed only as 'running-app-get-only', with the owner's OK: no steps, no storageState, no saveStorage. Read-only routes: 'home', 'cart-customer' and 'cart-customer-stress' (GET navigation, a saved session, non-mutating steps; an evaluate step is an assertion whose value is never recorded). 'login-customer' submits the login form and saves the session, so only the parent's fixtures agent runs it (--only login-customer); hunters pass --only home,cart-customer,cart-customer-stress. Checks and the view/full screenshots are taken after the last step: 'cart-customer' keeps its declared context, while 'cart-customer-stress' (dark plus reduced motion, offline, back and forward through history, a second tab, expired cookies) is read from its step screenshots, its step records and measuredState.changes. 'home' masks the promotion countdown and the hero carousel in screenshots only. Lab settings: slow4g, 4x CPU, warm-up, three cold runs and a host benchmark. checks.axe needs --axe pointing at the project's own axe-core build; without it each capture records the gap. Check with: node scripts/ui-probe.mjs --config scripts/probe-config.example.json --plan",
+  "schema": "ui-audit/probe-config@3",
+  "baseUrl": "http://127.0.0.1:4173",
+  "target": "disposable",
+  "readyMarker": {
+    "path": "/",
+    "selector": "meta[name=ui-audit-ready]",
+    "text": "audit-fixtures",
+    "timeoutMs": 10000
+  },
+  "driver": "auto",
+  "executable": null,
+  "headless": true,
+  "theme": {
+    "media": true,
+    "storage": {
+      "key": "color-mode",
+      "light": "light",
+      "dark": "dark"
+    }
+  },
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "viewports": [
+    {
+      "id": "m320",
+      "width": 320,
+      "height": 568,
+      "dpr": 2,
+      "mobile": true,
+      "touch": true
+    },
+    {
+      "id": "d1440",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "mobile": false,
+      "touch": false
+    }
+  ],
+  "network": "slow4g",
+  "networkProfiles": {
+    "flaky": {
+      "base": "slow4g",
+      "cycleMs": 4000,
+      "offlineMs": 1500
+    }
+  },
+  "cpuThrottle": 4,
+  "reducedMotion": false,
+  "media": {
+    "forcedColors": null,
+    "prefersContrast": null,
+    "hover": null
+  },
+  "timezone": "America/New_York",
+  "locale": "en-US",
+  "clock": {
+    "now": "2026-11-27T23:58:00-05:00"
+  },
+  "repeat": 3,
+  "warmup": true,
+  "settleMs": 800,
+  "navigationTimeoutMs": 30000,
+  "freezeAnimations": true,
+  "muteAudio": true,
+  "stableShots": {
+    "maxAttempts": 3,
+    "intervalMs": 150
+  },
+  "emulation": {
+    "safeAreaInsets": null,
+    "smallViewportHeightDifference": null,
+    "virtualKeyboardHeight": null
+  },
+  "benchmark": true,
+  "checks": {
+    "overflow": true,
+    "console": true,
+    "network": true,
+    "tapTargets": true,
+    "contrast": true,
+    "vitals": true,
+    "structure": true,
+    "resources": true,
+    "focusWalk": true,
+    "textSpacing": false,
+    "zoom": 200,
+    "axTree": false,
+    "heap": false,
+    "axe": true
+  },
+  "maxContrastSamples": 400,
+  "maxFocusStops": 80,
+  "routes": [
+    {
+      "id": "home",
+      "path": "/",
+      "storageState": null,
+      "waitFor": {
+        "selector": "main",
+        "timeoutMs": 10000
+      },
+      "mask": [
+        "[data-testid=promo-countdown]",
+        ".hero-carousel"
+      ],
+      "steps": [
+        {
+          "action": "scroll",
+          "y": 1200
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "screenshot",
+          "name": "home-scrolled"
+        }
+      ],
+      "saveStorage": null
+    },
+    {
+      "id": "cart-customer",
+      "path": "/cart",
+      "storageState": {
+        "session": "audit-store/customer"
+      },
+      "waitFor": {
+        "selector": "main",
+        "timeoutMs": 10000
+      },
+      "steps": [
+        {
+          "action": "waitFor",
+          "selector": "main h1",
+          "timeoutMs": 10000
+        },
+        {
+          "action": "screenshot",
+          "name": "loaded"
+        },
+        {
+          "action": "evaluate",
+          "expression": "if (document.querySelectorAll('[data-testid=cart-line]').length === 0) throw new Error('the cart has no lines')"
+        }
+      ],
+      "saveStorage": null
+    },
+    {
+      "id": "cart-customer-stress",
+      "path": "/cart",
+      "storageState": {
+        "session": "audit-store/customer"
+      },
+      "waitFor": {
+        "selector": "main",
+        "timeoutMs": 10000
+      },
+      "steps": [
+        {
+          "action": "waitFor",
+          "selector": "main h1",
+          "timeoutMs": 10000
+        },
+        {
+          "action": "emulateMedia",
+          "colorScheme": "dark",
+          "reducedMotion": true
+        },
+        {
+          "action": "screenshot",
+          "name": "dark-reduced"
+        },
+        {
+          "action": "setNetwork",
+          "profile": "offline"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "screenshot",
+          "name": "offline"
+        },
+        {
+          "action": "setNetwork",
+          "profile": "slow4g"
+        },
+        {
+          "action": "goto",
+          "path": "/products"
+        },
+        {
+          "action": "back"
+        },
+        {
+          "action": "screenshot",
+          "name": "after-back"
+        },
+        {
+          "action": "forward"
+        },
+        {
+          "action": "newTab"
+        },
+        {
+          "action": "goto",
+          "path": "/cart",
+          "tab": 1
+        },
+        {
+          "action": "waitFor",
+          "selector": "main",
+          "timeoutMs": 10000,
+          "tab": 1
+        },
+        {
+          "action": "clearCookies"
+        },
+        {
+          "action": "goto",
+          "path": "/cart"
+        },
+        {
+          "action": "screenshot",
+          "name": "after-expiry"
+        }
+      ],
+      "saveStorage": null
+    },
+    {
+      "id": "login-customer",
+      "path": "/login",
+      "storageState": null,
+      "waitFor": {
+        "selector": "form",
+        "timeoutMs": 10000
+      },
+      "steps": [
+        {
+          "action": "fill",
+          "selector": "input[name=email]",
+          "valueFrom": "account:audit-store-customer.login"
+        },
+        {
+          "action": "fill",
+          "selector": "input[name=password]",
+          "valueFrom": "account:audit-store-customer.password"
+        },
+        {
+          "action": "click",
+          "selector": "button[type=submit]"
+        },
+        {
+          "action": "waitFor",
+          "selector": "main",
+          "timeoutMs": 15000
+        }
+      ],
+      "saveStorage": "audit-store-customer.json"
+    }
+  ]
+}

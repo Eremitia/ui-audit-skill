@@ -1,0 +1,51 @@
+{
+  "schema": "ui-audit/config@1",
+  "owner_plan_note": "API key, team budget",
+  "profile": "standard",
+  "agent_cap": {
+    "quick": 15,
+    "standard": 40,
+    "deep": 90
+  },
+  "orchestration_reserve_fraction": 0.17,
+  "max_parallel_agents": 4,
+  "models": {
+    "haiku": "assume_available",
+    "sonnet": "probe",
+    "opus": "probe",
+    "fable": "unavailable"
+  },
+  "allow_fable_usage_credits": false,
+  "allow_max_effort": false,
+  "routing_overrides": {
+    "verify_candidate_strong": {
+      "model": "fable",
+      "effort": "high"
+    },
+    "verify_record_strong": {
+      "model": "fable",
+      "effort": "medium"
+    }
+  },
+  "dialogue": {
+    "max_rounds": 2
+  },
+  "escalation": {
+    "max_steps_per_item": 2
+  },
+  "report_language": "auto",
+  "output_root": "~/ui-audit-skill",
+  "visual_regression": {
+    "enabled": true,
+    "threshold": 0.2,
+    "include_aa": false,
+    "max_diff_pixel_ratio": 0.001,
+    "max_diff_pixels": null,
+    "mask_warn_pct": 30
+  },
+  "fix": {
+    "agent_cap": 30,
+    "max_parallel_fixers": 2
+  },
+  "asked_at": "2026-10-16T09:02:11Z"
+}

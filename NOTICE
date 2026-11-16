@@ -1,0 +1,103 @@
+ui-audit
+Copyright (c) 2026 Eremitia
+Licensed under the MIT License (see LICENSE).
+
+This file records the work that ui-audit builds on and the third-party
+software it uses. It adds no conditions to the MIT License.
+
+
+1. Architecture credit and adapted portions: cloudflare/security-audit-skill (MIT)
+
+   The overall shape of this skill's multi-agent audit follows the design of
+   the security-audit skill published by Cloudflare at
+   https://github.com/cloudflare/security-audit-skill under the MIT License:
+   a phased run that starts with reconnaissance, a coverage ledger that
+   records every unit of work and its state, hunter agents that work through
+   that ledger, coverage critics that look for gaps, independent verification
+   of every candidate before it becomes a finding, and schema validators that
+   check the files the run writes.
+
+   ui-audit audits how a web application works and looks, not its security,
+   and its instructions were written for that purpose. Some parts are adapted
+   from security-audit-skill rather than written from scratch:
+
+   - the findings schema's field structure (trace, evidence, conditions,
+     execution, remediation, confidence) in report-schema.json;
+   - a few input-hygiene patterns in the validators (visible-content,
+     reserved Windows path component and unsafe diagnostic character checks,
+     and the bounded walk over object fields);
+   - a few section-heading conventions in the companion and hunting files.
+
+   Because those portions come from a project published under the MIT
+   License, its copyright and permission notice is reproduced in section 5.
+
+
+2. Pixel comparison algorithm (published description, reimplemented)
+
+   scripts/ui-diff.mjs compares screenshots with two published techniques:
+
+   - a perceptual colour difference measured in the YIQ colour space, after
+     Y. Kotsarenko and F. Ramos, "Measuring perceived color difference using
+     YIQ NTSC transmission color space in mobile applications" (2010);
+   - an anti-aliased pixel detector, after V. Vysniauskas, "Anti-aliased
+     pixel and intensity slope detector" (2009).
+
+   Both techniques are widely known through the pixelmatch library
+   (https://github.com/mapbox/pixelmatch, ISC License), which Playwright also
+   bundles. ui-audit reimplements them from their published descriptions in
+   its own code. No source code from pixelmatch or from Playwright was copied.
+
+
+3. Third-party software
+
+   playwright-core (Apache License 2.0)
+     https://github.com/microsoft/playwright
+     The only npm dependency, pinned to version 1.63.0 in package.json and
+     installed by "npm ci" into this skill's own node_modules folder. It is a
+     dependency and is not vendored: no Playwright file is part of this
+     repository.
+
+   axe-core (Mozilla Public License 2.0)
+     https://github.com/dequelabs/axe-core
+     Not distributed with this skill and never downloaded by it. When the
+     audited project already has axe-core installed (for example as a
+     dependency of eslint-plugin-jsx-a11y or Lighthouse), the browser probe
+     can load that copy, read-only, from the project's own node_modules
+     folder. If the project has no copy, the probe skips axe and reports the
+     gap. Any future decision to vendor axe-core would have to ship it with
+     its MPL-2.0 licence text and header.
+
+
+4. Standards and research
+
+   Thresholds and rules in this skill cite public documents (W3C WCAG 2.2,
+   web.dev, Chrome for Developers, framework documentation, Nielsen Norman
+   Group, Baymard Institute, platform design guidelines and others). They are
+   listed with links in SOURCES.md. The skill restates them in its own words;
+   it does not reproduce those documents.
+
+
+5. MIT notice of cloudflare/security-audit-skill
+
+   MIT License
+
+   Copyright (c) 2025-2026 Cloudflare, Inc.
+
+   Permission is hereby granted, free of charge, to any person obtaining a
+   copy of this software and associated documentation files (the
+   "Software"), to deal in the Software without restriction, including
+   without limitation the rights to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to permit
+   persons to whom the Software is furnished to do so, subject to the
+   following conditions:
+
+   The above copyright notice and this permission notice shall be included
+   in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+   NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+   USE OR OTHER DEALINGS IN THE SOFTWARE.

@@ -1,0 +1,15 @@
+{
+  "name": "ui-audit-skill",
+  "version": "2.5.0",
+  "private": true,
+  "description": "Multi-agent UI and functional audit skill for coding agents; loopback-only browser probe and validators.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {"node": ">=22.12"},
+  "scripts": {
+    "pretest": "node -e \"const fs=require('fs');const t=require('./package.json').scripts.test.split(' ');const m=t.filter(f=>/[.][cm]?js$/.test(f)&&!fs.existsSync(f));if(m.length){console.error('Missing test files: '+m.join(', '));process.exit(1)}\"",
+    "test": "node --test validate-findings.test.cjs validate-coverage-ledger.test.cjs validate-orchestration.test.cjs skill-docs.test.mjs scripts/ui-probe.test.mjs scripts/ui-diff.test.mjs scripts/orchestrate.test.mjs scripts/detect-project.test.mjs scripts/static-serve.test.mjs scripts/promote.test.mjs scripts/check-traces.test.mjs scripts/group-candidates.test.mjs scripts/setup.test.mjs",
+    "validate:example": "node validate-findings.cjs examples/run-1/findings.json && node validate-coverage-ledger.cjs examples/run-1/coverage-ledger.json --metadata examples/run-1/run-metadata.json && node validate-orchestration.cjs examples/run-1/agent-log.json --kind agent-log --metadata examples/run-1/run-metadata.json --findings examples/run-1/findings.json --ledger examples/run-1/coverage-ledger.json && node validate-orchestration.cjs examples/run-1/fix/fix-log.json --kind fix-log --findings examples/run-1/findings.json --agent-log examples/run-1/fix/agent-log.json && node validate-orchestration.cjs examples/ui-audit.config.json --kind config"
+  },
+  "dependencies": {"playwright-core": "1.63.0"}
+}

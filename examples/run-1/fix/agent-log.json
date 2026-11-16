@@ -1,0 +1,122 @@
+{
+  "schema": "ui-audit/agent-log@1",
+  "scope": "fix",
+  "run_id": "run-1",
+  "fix_run_id": "fix-1",
+  "profile": "standard",
+  "cap": 30,
+  "reserve": {
+    "fixer_continuations": 1,
+    "reverifiers": 1,
+    "orchestration": 6
+  },
+  "invocations": [
+    {
+      "seq": 1,
+      "agent_id": "x1-checkout",
+      "host_agent_id": null,
+      "kind": "launch",
+      "task_kind": "fix_logic",
+      "role": "general",
+      "phase": "F3",
+      "wave": null,
+      "purpose": "fix",
+      "parent_ref": null,
+      "fallback_ref": null,
+      "retry_of": null,
+      "model_requested": "sonnet",
+      "model_passed": "sonnet",
+      "effort_requested": "high",
+      "effort_applied": true,
+      "model_self_report": "claude-sonnet-5-5",
+      "model_observed": "sonnet",
+      "outcome": "ok",
+      "failure_class": null,
+      "counts_against_cap": true,
+      "started_at": "2026-10-16T14:10:00Z",
+      "finished_at": "2026-10-16T14:24:00Z"
+    },
+    {
+      "seq": 2,
+      "agent_id": "x1-checkout",
+      "host_agent_id": null,
+      "kind": "resume",
+      "task_kind": "fix_logic",
+      "role": "general",
+      "phase": "F3",
+      "wave": null,
+      "purpose": "fix",
+      "parent_ref": null,
+      "fallback_ref": null,
+      "retry_of": null,
+      "model_requested": "sonnet",
+      "model_passed": "sonnet",
+      "effort_requested": "high",
+      "effort_applied": true,
+      "model_self_report": "claude-sonnet-5-5",
+      "model_observed": "sonnet",
+      "outcome": "ok",
+      "failure_class": null,
+      "counts_against_cap": true,
+      "started_at": "2026-10-16T14:40:00Z",
+      "finished_at": "2026-10-16T14:52:00Z"
+    },
+    {
+      "seq": 3,
+      "agent_id": "y1-checkout",
+      "host_agent_id": null,
+      "kind": "launch",
+      "task_kind": "fix_reverify_strong",
+      "role": "general",
+      "phase": "F5",
+      "wave": null,
+      "purpose": "fix_reverify",
+      "parent_ref": null,
+      "fallback_ref": null,
+      "retry_of": null,
+      "model_requested": "opus",
+      "model_passed": "opus",
+      "effort_requested": "medium",
+      "effort_applied": true,
+      "model_self_report": "claude-opus-5-5",
+      "model_observed": "opus",
+      "outcome": "ok",
+      "failure_class": null,
+      "counts_against_cap": true,
+      "started_at": "2026-10-16T14:58:00Z",
+      "finished_at": "2026-10-16T15:14:00Z"
+    }
+  ],
+  "escalations": [],
+  "dialogues": [],
+  "fallbacks": [],
+  "model_availability": {
+    "haiku": {
+      "declared": "assume_available",
+      "observed": "untested",
+      "first_evidence_seq": null,
+      "resets": []
+    },
+    "sonnet": {
+      "declared": "probe",
+      "observed": "available",
+      "first_evidence_seq": 1,
+      "resets": []
+    },
+    "opus": {
+      "declared": "probe",
+      "observed": "available",
+      "first_evidence_seq": 3,
+      "resets": []
+    },
+    "fable": {
+      "declared": "unavailable",
+      "observed": "unavailable",
+      "first_evidence_seq": null,
+      "resets": []
+    }
+  },
+  "cap_overrides": [],
+  "spent": 3,
+  "uncovered_by_cap": []
+}

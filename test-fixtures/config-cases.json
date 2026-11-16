@@ -1,0 +1,511 @@
+{
+  "_comment": "Shared cases for scripts/orchestrate.mjs and the reserve helpers copied into the validators. Regenerate only when ORCHESTRATION.md section 1 changes.",
+  "reserve_cases": [
+    {
+      "profile": "quick",
+      "cap": 15,
+      "fraction": 0.1,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 1,
+        "validation": 1,
+        "orchestration": 2,
+        "total": 8
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 40,
+      "fraction": 0.1,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 4,
+        "total": 12
+      }
+    },
+    {
+      "profile": "deep",
+      "cap": 90,
+      "fraction": 0.1,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 9,
+        "total": 17
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 30,
+      "fraction": 0.1,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 3,
+        "total": 11
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 13,
+      "fraction": 0.3,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 4,
+        "total": 12
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 5,
+      "fraction": 0.1,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 2,
+        "total": 10
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 40,
+      "fraction": 0.17,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 7,
+        "total": 15
+      }
+    },
+    {
+      "profile": "deep",
+      "cap": 200,
+      "fraction": 0.05,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 10,
+        "total": 18
+      }
+    },
+    {
+      "profile": "quick",
+      "cap": 9,
+      "fraction": 0.1,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 1,
+        "validation": 1,
+        "orchestration": 2,
+        "total": 8
+      }
+    }
+  ],
+  "floor_reserve_cases": [
+    {
+      "profile": "quick",
+      "cap": 15,
+      "fraction": 0.1,
+      "floor": 6,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 1,
+        "validation": 1,
+        "orchestration": 6,
+        "total": 12
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 40,
+      "fraction": 0.1,
+      "floor": 6,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 6,
+        "total": 14
+      }
+    },
+    {
+      "profile": "deep",
+      "cap": 90,
+      "fraction": 0.1,
+      "floor": 6,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 9,
+        "total": 17
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 40,
+      "fraction": 0.1,
+      "floor": 4,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 4,
+        "total": 12
+      }
+    },
+    {
+      "profile": "standard",
+      "cap": 40,
+      "fraction": 0.17,
+      "floor": 6,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 2,
+        "validation": 2,
+        "orchestration": 7,
+        "total": 15
+      }
+    },
+    {
+      "profile": "quick",
+      "cap": 15,
+      "fraction": 0.1,
+      "floor": 8,
+      "reserve": {
+        "reconnaissance": 4,
+        "critics": 1,
+        "validation": 1,
+        "orchestration": 8,
+        "total": 14
+      }
+    }
+  ],
+  "minimum_cap_cases": [
+    {
+      "profile": "quick",
+      "fraction": 0.1,
+      "minimum": 9
+    },
+    {
+      "profile": "standard",
+      "fraction": 0.1,
+      "minimum": 11
+    },
+    {
+      "profile": "deep",
+      "fraction": 0.1,
+      "minimum": 11
+    },
+    {
+      "profile": "standard",
+      "fraction": 0.3,
+      "minimum": 13
+    },
+    {
+      "profile": "deep",
+      "fraction": 0.05,
+      "minimum": 11
+    }
+  ],
+  "minimum_cap_with_setup_cases": [
+    {
+      "profile": "quick",
+      "fraction": 0.1,
+      "floor": 2,
+      "setup": 1,
+      "minimum": 10
+    },
+    {
+      "profile": "standard",
+      "fraction": 0.1,
+      "floor": 2,
+      "setup": 1,
+      "minimum": 12
+    },
+    {
+      "profile": "deep",
+      "fraction": 0.1,
+      "floor": 2,
+      "setup": 1,
+      "minimum": 12
+    },
+    {
+      "profile": "quick",
+      "fraction": 0.1,
+      "floor": 6,
+      "setup": 1,
+      "minimum": 14
+    },
+    {
+      "profile": "standard",
+      "fraction": 0.1,
+      "floor": 6,
+      "setup": 1,
+      "minimum": 16
+    },
+    {
+      "profile": "deep",
+      "fraction": 0.1,
+      "floor": 6,
+      "setup": 1,
+      "minimum": 16
+    },
+    {
+      "profile": "standard",
+      "fraction": 0.1,
+      "floor": 4,
+      "setup": 1,
+      "minimum": 14
+    }
+  ],
+  "floor_cases": [
+    {
+      "name": "default config: fable probe",
+      "availability": {
+        "haiku": "assume_available",
+        "sonnet": "probe",
+        "opus": "probe",
+        "fable": "probe"
+      },
+      "max_rounds": 2,
+      "floor": 6
+    },
+    {
+      "name": "every alias assume_available",
+      "availability": {
+        "haiku": "assume_available",
+        "sonnet": "assume_available",
+        "opus": "assume_available",
+        "fable": "assume_available"
+      },
+      "max_rounds": 2,
+      "floor": 4
+    },
+    {
+      "name": "fable observed available",
+      "availability": {
+        "haiku": "available",
+        "sonnet": "available",
+        "opus": "available",
+        "fable": "available"
+      },
+      "max_rounds": 3,
+      "floor": 6
+    },
+    {
+      "name": "fable unavailable",
+      "availability": {
+        "haiku": "assume_available",
+        "sonnet": "probe",
+        "opus": "probe",
+        "fable": "unavailable"
+      },
+      "max_rounds": 2,
+      "floor": 6
+    },
+    {
+      "name": "fable unavailable, three rounds",
+      "availability": {
+        "haiku": "assume_available",
+        "sonnet": "probe",
+        "opus": "probe",
+        "fable": "unavailable"
+      },
+      "max_rounds": 3,
+      "floor": 8
+    }
+  ],
+  "config_cases": {
+    "valid": [
+      {
+        "name": "the shipped example config",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "owner_plan_note": null,
+          "profile": "standard",
+          "agent_cap": {
+            "quick": 15,
+            "standard": 40,
+            "deep": 90
+          },
+          "orchestration_reserve_fraction": 0.1,
+          "max_parallel_agents": 4,
+          "models": {
+            "haiku": "assume_available",
+            "sonnet": "probe",
+            "opus": "probe",
+            "fable": "probe"
+          },
+          "allow_fable_usage_credits": false,
+          "allow_max_effort": false,
+          "routing_overrides": {},
+          "dialogue": {
+            "max_rounds": 2
+          },
+          "escalation": {
+            "max_steps_per_item": 2
+          },
+          "report_language": "auto",
+          "output_root": "~/ui-audit-skill",
+          "visual_regression": {
+            "enabled": true,
+            "threshold": 0.2,
+            "include_aa": false,
+            "max_diff_pixel_ratio": 0.001,
+            "max_diff_pixels": null,
+            "mask_warn_pct": 30
+          },
+          "fix": {
+            "agent_cap": 30,
+            "max_parallel_fixers": 2
+          },
+          "asked_at": null
+        }
+      },
+      {
+        "name": "only the schema (everything else default)",
+        "config": {
+          "schema": "ui-audit/config@1"
+        }
+      },
+      {
+        "name": "a plan note and a quick default",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "owner_plan_note": "team seat",
+          "profile": "quick"
+        }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "unknown key",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "agents": 3
+        },
+        "error": "/agents"
+      },
+      {
+        "name": "wrong schema",
+        "config": {
+          "schema": "ui-audit/config@2"
+        },
+        "error": "/schema"
+      },
+      {
+        "name": "fraction above the range",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "orchestration_reserve_fraction": 0.5
+        },
+        "error": "/orchestration_reserve_fraction"
+      },
+      {
+        "name": "quick cap below the smallest that can start",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "agent_cap": {
+            "quick": 9,
+            "standard": 40,
+            "deep": 90
+          }
+        },
+        "error": "/agent_cap/quick"
+      },
+      {
+        "name": "judge override below opus",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "routing_overrides": {
+            "judge": {
+              "model": "sonnet"
+            }
+          }
+        },
+        "error": "/routing_overrides/judge/model"
+      },
+      {
+        "name": "hunting on haiku",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "routing_overrides": {
+            "hunt_standard": {
+              "model": "haiku"
+            }
+          }
+        },
+        "error": "/routing_overrides/hunt_standard/model"
+      },
+      {
+        "name": "unknown task kind override",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "routing_overrides": {
+            "hunt_everything": {
+              "model": "opus"
+            }
+          }
+        },
+        "error": "/routing_overrides/hunt_everything"
+      },
+      {
+        "name": "unknown model alias",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "models": {
+            "gpt": "probe"
+          }
+        },
+        "error": "/models/gpt"
+      },
+      {
+        "name": "too many dialogue rounds",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "dialogue": {
+            "max_rounds": 4
+          }
+        },
+        "error": "/dialogue/max_rounds"
+      },
+      {
+        "name": "fix cap out of range",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "fix": {
+            "agent_cap": 2,
+            "max_parallel_fixers": 2
+          }
+        },
+        "error": "/fix/agent_cap"
+      },
+      {
+        "name": "plan note too long",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "owner_plan_note": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "error": "/owner_plan_note"
+      },
+      {
+        "name": "bad report language",
+        "config": {
+          "schema": "ui-audit/config@1",
+          "report_language": "Spanish"
+        },
+        "error": "/report_language"
+      }
+    ]
+  }
+}

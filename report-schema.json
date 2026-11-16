@@ -1,0 +1,2016 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "ui-audit findings.json contract. validate-findings.cjs interprets exactly the keywords used here; keep it to that set. Every prose field is written in run-metadata.json report_language; keys, enums and fingerprints stay ASCII English.",
+  "description": "Top-level array of decided records, sorted by fingerprint, one record per root cause.",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "description": "A deviation reproduced locally by the hunter and independently by a verifier, with promoted evidence.",
+        "properties": {
+          "verdict": {
+            "type": "string",
+            "const": "confirmed"
+          },
+          "fingerprint": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$",
+            "description": "ASCII identifier of the root cause, <domain>/<lens-slug>/<surface-slug>/<defect-slug>. Never contains a line number, wave, agent, severity or verdict; identical in every state."
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "One line, in report_language.",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "What the user experiences, in report_language."
+          },
+          "lens": {
+            "type": "string",
+            "enum": [
+              "LENSES.md#Functional flows",
+              "LENSES.md#Business rules as displayed",
+              "LENSES.md#Forms and validation",
+              "LENSES.md#Loading, empty and error states",
+              "LENSES.md#Navigation and routing",
+              "LENSES.md#Data consistency across screens",
+              "LENSES.md#Roles in the interface",
+              "LENSES.md#Wildcard",
+              "LENSES.md#Obvious things",
+              "FUNCTIONAL-FLOWS.md#Entity lifecycle transitions",
+              "FUNCTIONAL-FLOWS.md#Multi-step flows and drafts",
+              "FUNCTIONAL-FLOWS.md#Double submit and idempotent actions",
+              "FUNCTIONAL-FLOWS.md#Concurrent sessions and stale views",
+              "FUNCTIONAL-FLOWS.md#Live updates and polling correctness",
+              "FUNCTIONAL-FLOWS.md#Displayed business rules",
+              "FUNCTIONAL-FLOWS.md#Figure consistency across screens",
+              "FUNCTIONAL-FLOWS.md#Money, quantity and rounding",
+              "FUNCTIONAL-FLOWS.md#Time, dates and time zones",
+              "FUNCTIONAL-FLOWS.md#Locale and number formatting",
+              "FUNCTIONAL-FLOWS.md#Exports match the screen",
+              "FUNCTIONAL-FLOWS.md#Form validation and boundary values",
+              "FUNCTIONAL-FLOWS.md#Search, filter, sort and pagination",
+              "FUNCTIONAL-FLOWS.md#Uploads and generated files",
+              "FUNCTIONAL-FLOWS.md#Role-gated actions",
+              "FUNCTIONAL-FLOWS.md#Destructive actions, confirmation and undo",
+              "RESPONSIVE-AND-LAYOUT.md#Horizontal overflow and clipping",
+              "RESPONSIVE-AND-LAYOUT.md#Breakpoint pivots",
+              "RESPONSIVE-AND-LAYOUT.md#Reflow, zoom and text spacing",
+              "RESPONSIVE-AND-LAYOUT.md#Orientation and safe areas",
+              "RESPONSIVE-AND-LAYOUT.md#Long and unbroken content",
+              "RESPONSIVE-AND-LAYOUT.md#Growing lists and internal scroll",
+              "RESPONSIVE-AND-LAYOUT.md#Overlap and stacking",
+              "RESPONSIVE-AND-LAYOUT.md#Target size and spacing",
+              "RESPONSIVE-AND-LAYOUT.md#Dialogs and on-screen keyboard",
+              "RESPONSIVE-AND-LAYOUT.md#Hover versus touch media",
+              "PERFORMANCE.md#Largest paint and render-blocking",
+              "PERFORMANCE.md#Layout shift",
+              "PERFORMANCE.md#JavaScript weight and client boundaries",
+              "PERFORMANCE.md#Images and media",
+              "PERFORMANCE.md#Fonts",
+              "PERFORMANCE.md#Server and data waterfalls",
+              "PERFORMANCE.md#Interaction latency and long tasks",
+              "PERFORMANCE.md#Re-render and DOM churn",
+              "PERFORMANCE.md#Polling and background work",
+              "PERFORMANCE.md#Large lists and DOM size",
+              "PERFORMANCE.md#Long-session stability",
+              "PERFORMANCE.md#Back/forward cache",
+              "ACCESSIBILITY.md#Text and non-text contrast",
+              "ACCESSIBILITY.md#Text alternatives and names",
+              "ACCESSIBILITY.md#Color as the only signal",
+              "ACCESSIBILITY.md#Structure and semantics",
+              "ACCESSIBILITY.md#Forced colors and contrast preference",
+              "ACCESSIBILITY.md#Keyboard operation and focus order",
+              "ACCESSIBILITY.md#Focus visibility and obscuring",
+              "ACCESSIBILITY.md#Dialogs and overlays",
+              "ACCESSIBILITY.md#Motion and timing",
+              "ACCESSIBILITY.md#Pointer gestures and cancellation",
+              "ACCESSIBILITY.md#Form labels, errors and help",
+              "ACCESSIBILITY.md#Status messages and live regions",
+              "ACCESSIBILITY.md#Custom widget roles and states",
+              "ACCESSIBILITY.md#Accessible authentication",
+              "ACCESSIBILITY.md#Consistent navigation and help",
+              "VISUAL-AND-THEMING.md#Theme parity",
+              "VISUAL-AND-THEMING.md#Theme initialization and flash",
+              "VISUAL-AND-THEMING.md#Native controls and color scheme",
+              "VISUAL-AND-THEMING.md#Per-tenant brand colors",
+              "VISUAL-AND-THEMING.md#Token discipline",
+              "VISUAL-AND-THEMING.md#Component consistency",
+              "VISUAL-AND-THEMING.md#Icon family and imagery",
+              "VISUAL-AND-THEMING.md#Generic or template look",
+              "VISUAL-AND-THEMING.md#Public page metadata and share preview",
+              "VISUAL-AND-THEMING.md#Unintended visual change",
+              "RESILIENCE-AND-STATES.md#Loading states",
+              "RESILIENCE-AND-STATES.md#Empty states",
+              "RESILIENCE-AND-STATES.md#Error states and boundaries",
+              "RESILIENCE-AND-STATES.md#Not found and forbidden",
+              "RESILIENCE-AND-STATES.md#Hydration mismatches",
+              "RESILIENCE-AND-STATES.md#Offline and flaky network",
+              "RESILIENCE-AND-STATES.md#Slow responses and pending feedback",
+              "RESILIENCE-AND-STATES.md#Failed mutations",
+              "RESILIENCE-AND-STATES.md#Session expiry and re-entry",
+              "RESILIENCE-AND-STATES.md#Stale tabs and deploys",
+              "RESILIENCE-AND-STATES.md#Back, forward and refresh",
+              "RESILIENCE-AND-STATES.md#Hidden tab and resume",
+              "RESILIENCE-AND-STATES.md#Alerts, sounds and notifications",
+              "PROJECT-CONVENTIONS.md#Documented UI rules",
+              "PROJECT-CONVENTIONS.md#Owner preferences on record",
+              "PROJECT-CONVENTIONS.md#Code structure conventions",
+              "PROJECT-CONVENTIONS.md#Navigation and configuration drift",
+              "PROJECT-CONVENTIONS.md#Test presence conventions"
+            ],
+            "description": "The defect class or ordinary lens that found it. Core discipline, Universal moves and Validation rules blocks are not lenses."
+          },
+          "persona": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+                "description": "A persona role from run-metadata.json."
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The persona as the report names it."
+              }
+            },
+            "required": [
+              "role",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          "surface": {
+            "type": "object",
+            "properties": {
+              "route": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "A route such as /m/[slug], or static for repository-wide items."
+              },
+              "component": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Component name or null."
+              },
+              "state": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The screen or component state, such as 'checkout dialog open, transfer selected'."
+              }
+            },
+            "required": [
+              "route",
+              "component",
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          "context": {
+            "type": "object",
+            "description": "The context of the strongest reproduction. 'any' means the value does not change the result.",
+            "properties": {
+              "viewport": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "description": "The viewport the strongest reproduction used, or null when the viewport does not matter.",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$"
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 3840
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 3840
+                  },
+                  "dpr": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "id",
+                  "width",
+                  "height",
+                  "dpr"
+                ],
+                "additionalProperties": false
+              },
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark",
+                  "system",
+                  "any"
+                ]
+              },
+              "input_modality": {
+                "type": "string",
+                "enum": [
+                  "pointer",
+                  "touch",
+                  "keyboard",
+                  "screenreader",
+                  "any"
+                ]
+              },
+              "network": {
+                "type": "string",
+                "enum": [
+                  "fast",
+                  "slow4g",
+                  "slow3g",
+                  "offline",
+                  "flaky",
+                  "any"
+                ]
+              },
+              "data_state": {
+                "type": "string",
+                "enum": [
+                  "empty",
+                  "one",
+                  "typical",
+                  "heavy",
+                  "longtext",
+                  "stale",
+                  "any"
+                ]
+              },
+              "motion": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "reduced",
+                  "any"
+                ]
+              },
+              "zoom_percent": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 400
+              },
+              "browser": {
+                "type": "string",
+                "enum": [
+                  "chromium",
+                  "firefox",
+                  "webkit",
+                  "any"
+                ]
+              },
+              "timezone": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "IANA time zone, or null."
+              },
+              "locale": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "BCP 47 locale, or null."
+              },
+              "session": {
+                "type": "string",
+                "enum": [
+                  "fresh",
+                  "expired",
+                  "reopened",
+                  "twotabs",
+                  "twousers",
+                  "any"
+                ]
+              }
+            },
+            "required": [
+              "viewport",
+              "theme",
+              "input_modality",
+              "network",
+              "data_state"
+            ],
+            "additionalProperties": false
+          },
+          "expectation": {
+            "type": "object",
+            "properties": {
+              "source_kind": {
+                "type": "string",
+                "enum": [
+                  "repo_rule",
+                  "owner_preference",
+                  "business_rule",
+                  "standard",
+                  "budget",
+                  "sibling_screen",
+                  "platform_contract",
+                  "approved_baseline"
+                ]
+              },
+              "ref": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "An expectation ref in a coverage-ledger namespace: path#anchor, PR-NN, memory:<file>#<heading>, WCAG22#<sc>, HTML#<section>, a companion block ref, sibling:<path>, RULE:<rule-id> (a SOURCES.md rule; source_kind budget, standard or platform_contract) or baseline:<baseline-id>#<capture-key> (an approved visual baseline capture; source_kind approved_baseline only)."
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "What should happen, quoted or paraphrased from the source, in report_language."
+              }
+            },
+            "required": [
+              "source_kind",
+              "ref",
+              "statement"
+            ],
+            "additionalProperties": false
+          },
+          "root_cause": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "The source-level cause."
+          },
+          "trace": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "Source path of the defect: one entrypoint or sink, or entrypoint, propagation..., sink.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "entrypoint",
+                    "propagation",
+                    "sink"
+                  ]
+                },
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Repository-relative path."
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Function, component or block."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "kind",
+                "file",
+                "line",
+                "scope",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Repository-relative path or owned artifact path."
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "file",
+                "line",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "conditions": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "Conditions under which the defect shows.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "viewport",
+                    "theme",
+                    "input_modality",
+                    "user_role",
+                    "data_state",
+                    "network_condition",
+                    "session_state",
+                    "browser_engine",
+                    "locale_or_timezone",
+                    "timing_dependency",
+                    "motion_preference",
+                    "zoom_or_text_size",
+                    "app_configuration",
+                    "concurrency"
+                  ]
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "kind",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution": {
+            "type": "object",
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": [
+                  "browser",
+                  "test",
+                  "scan"
+                ]
+              },
+              "build_mode": {
+                "type": "string",
+                "enum": [
+                  "production",
+                  "development",
+                  "none"
+                ],
+                "description": "none only for scans."
+              },
+              "topology": {
+                "type": "string",
+                "enum": [
+                  "nat-forward",
+                  "netns-bridge",
+                  "browser-in-vm",
+                  "browser-in-wsl",
+                  "container-loopback",
+                  "host-only",
+                  "none"
+                ],
+                "description": "Runtime topology of the reproduction; none only for scans. browser-in-wsl is the legacy alias of browser-in-vm."
+              },
+              "user_perspective": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "What the persona sees and cannot do."
+              },
+              "inputs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "description": "Fixture data, account keys (never values), probe config paths.",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "steps": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "expected_result": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true
+              },
+              "observed_result": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true
+              },
+              "measurements": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "metric": {
+                      "type": "string",
+                      "enum": [
+                        "lcp_ms",
+                        "inp_ms",
+                        "cls",
+                        "fcp_ms",
+                        "ttfb_ms",
+                        "tbt_ms",
+                        "long_task_ms",
+                        "script_transfer_bytes",
+                        "script_decoded_bytes",
+                        "image_transfer_bytes",
+                        "rsc_payload_bytes",
+                        "dom_nodes",
+                        "js_heap_bytes",
+                        "requests_per_minute",
+                        "contrast_ratio",
+                        "target_size_px",
+                        "overflow_px",
+                        "dom_mutations",
+                        "visual_diff_ratio",
+                        "visual_diff_pixels",
+                        "font_size_px",
+                        "feedback_ms",
+                        "other"
+                      ]
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "minLength": 1,
+                      "visibleContent": true
+                    },
+                    "threshold": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "pass_if": {
+                      "type": "string",
+                      "enum": [
+                        "<=",
+                        ">=",
+                        "<",
+                        ">",
+                        "="
+                      ],
+                      "description": "The passing condition is 'value <pass_if> threshold'. A recorded failure must not satisfy it."
+                    },
+                    "runs": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 20
+                    },
+                    "aggregation": {
+                      "type": "string",
+                      "enum": [
+                        "median",
+                        "max",
+                        "min",
+                        "single"
+                      ]
+                    },
+                    "profile": {
+                      "type": "string",
+                      "minLength": 1,
+                      "visibleContent": true,
+                      "description": "Viewport, network and CPU profile, plus topology."
+                    }
+                  },
+                  "required": [
+                    "metric",
+                    "value",
+                    "unit",
+                    "threshold",
+                    "pass_if",
+                    "runs",
+                    "aggregation",
+                    "profile"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "artifacts": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "description": "Owned artifact paths agents/<id>/artifacts/<file>.",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "method",
+              "build_mode",
+              "topology",
+              "user_perspective",
+              "inputs",
+              "steps",
+              "expected_result",
+              "observed_result",
+              "artifacts"
+            ],
+            "additionalProperties": false
+          },
+          "remediation": {
+            "type": "object",
+            "properties": {
+              "strategy": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The smallest source fix."
+              },
+              "regression_check": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The test or probe check that keeps it fixed."
+              },
+              "code_changes": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "file_name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "fixed_code": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "file_name",
+                    "fixed_code"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "strategy",
+              "regression_check"
+            ],
+            "additionalProperties": false
+          },
+          "severity": {
+            "type": "object",
+            "properties": {
+              "impact": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "string",
+                    "enum": [
+                      "blocker",
+                      "high",
+                      "medium",
+                      "low",
+                      "polish"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "visibleContent": true
+                  }
+                },
+                "required": [
+                  "score",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "reach": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "string",
+                    "enum": [
+                      "all_users",
+                      "core_persona",
+                      "segment",
+                      "narrow"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "visibleContent": true
+                  }
+                },
+                "required": [
+                  "score",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "overall": {
+                "type": "string",
+                "enum": [
+                  "blocker",
+                  "high",
+                  "medium",
+                  "low",
+                  "polish"
+                ],
+                "description": "Never above impact, at most two levels below it, and at least one below it when reach is narrow (unless impact is polish)."
+              }
+            },
+            "required": [
+              "impact",
+              "reach",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "confidence": {
+            "type": "object",
+            "properties": {
+              "score": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true
+              }
+            },
+            "required": [
+              "score",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "also_affects": {
+            "type": "array",
+            "uniqueItems": true,
+            "description": "Further screens or contexts of the same root cause.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "route": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Another route with the same root cause."
+                },
+                "context_summary": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Where and when it shows there."
+                }
+              },
+              "required": [
+                "route",
+                "context_summary"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "deliberation": {
+            "type": "array",
+            "uniqueItems": true,
+            "description": "Consults, judge rulings, escalations and fallback panels that shaped this record, copied from agent-log.json. Each id appears once per record and must exist in the agent log with a matching kind.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(dlg|esc|fb)-[0-9]{2,4}$",
+                  "description": "dlg-NN for a consult or judge, esc-NN for an escalation, fb-NN for a fallback panel."
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "consult",
+                    "judge",
+                    "escalation",
+                    "fallback_panel"
+                  ]
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "agreed",
+                    "judged_requester",
+                    "judged_peer",
+                    "judged_neither",
+                    "cancelled_budget",
+                    "cancelled_pause",
+                    "escalation_resolved",
+                    "escalation_unresolved",
+                    "escalation_not_funded",
+                    "panel_agreed",
+                    "panel_judged",
+                    "panel_majority",
+                    "panel_split",
+                    "panel_not_funded"
+                  ]
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "maxLength": 1200,
+                  "description": "What was asked, who took which position and how it ended, in report_language."
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "outcome",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "verdict",
+          "fingerprint",
+          "title",
+          "description",
+          "lens",
+          "persona",
+          "surface",
+          "context",
+          "expectation",
+          "root_cause",
+          "trace",
+          "evidence",
+          "conditions",
+          "execution",
+          "remediation",
+          "severity",
+          "confidence"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "description": "A credible deviation whose decisive fact needs a real device, engine, clock, network or owner. Carries no severity.",
+        "properties": {
+          "verdict": {
+            "type": "string",
+            "const": "needs_validation"
+          },
+          "fingerprint": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$",
+            "description": "ASCII identifier of the root cause, <domain>/<lens-slug>/<surface-slug>/<defect-slug>. Never contains a line number, wave, agent, severity or verdict; identical in every state."
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "One line, in report_language.",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "What the user experiences, in report_language."
+          },
+          "lens": {
+            "type": "string",
+            "enum": [
+              "LENSES.md#Functional flows",
+              "LENSES.md#Business rules as displayed",
+              "LENSES.md#Forms and validation",
+              "LENSES.md#Loading, empty and error states",
+              "LENSES.md#Navigation and routing",
+              "LENSES.md#Data consistency across screens",
+              "LENSES.md#Roles in the interface",
+              "LENSES.md#Wildcard",
+              "LENSES.md#Obvious things",
+              "FUNCTIONAL-FLOWS.md#Entity lifecycle transitions",
+              "FUNCTIONAL-FLOWS.md#Multi-step flows and drafts",
+              "FUNCTIONAL-FLOWS.md#Double submit and idempotent actions",
+              "FUNCTIONAL-FLOWS.md#Concurrent sessions and stale views",
+              "FUNCTIONAL-FLOWS.md#Live updates and polling correctness",
+              "FUNCTIONAL-FLOWS.md#Displayed business rules",
+              "FUNCTIONAL-FLOWS.md#Figure consistency across screens",
+              "FUNCTIONAL-FLOWS.md#Money, quantity and rounding",
+              "FUNCTIONAL-FLOWS.md#Time, dates and time zones",
+              "FUNCTIONAL-FLOWS.md#Locale and number formatting",
+              "FUNCTIONAL-FLOWS.md#Exports match the screen",
+              "FUNCTIONAL-FLOWS.md#Form validation and boundary values",
+              "FUNCTIONAL-FLOWS.md#Search, filter, sort and pagination",
+              "FUNCTIONAL-FLOWS.md#Uploads and generated files",
+              "FUNCTIONAL-FLOWS.md#Role-gated actions",
+              "FUNCTIONAL-FLOWS.md#Destructive actions, confirmation and undo",
+              "RESPONSIVE-AND-LAYOUT.md#Horizontal overflow and clipping",
+              "RESPONSIVE-AND-LAYOUT.md#Breakpoint pivots",
+              "RESPONSIVE-AND-LAYOUT.md#Reflow, zoom and text spacing",
+              "RESPONSIVE-AND-LAYOUT.md#Orientation and safe areas",
+              "RESPONSIVE-AND-LAYOUT.md#Long and unbroken content",
+              "RESPONSIVE-AND-LAYOUT.md#Growing lists and internal scroll",
+              "RESPONSIVE-AND-LAYOUT.md#Overlap and stacking",
+              "RESPONSIVE-AND-LAYOUT.md#Target size and spacing",
+              "RESPONSIVE-AND-LAYOUT.md#Dialogs and on-screen keyboard",
+              "RESPONSIVE-AND-LAYOUT.md#Hover versus touch media",
+              "PERFORMANCE.md#Largest paint and render-blocking",
+              "PERFORMANCE.md#Layout shift",
+              "PERFORMANCE.md#JavaScript weight and client boundaries",
+              "PERFORMANCE.md#Images and media",
+              "PERFORMANCE.md#Fonts",
+              "PERFORMANCE.md#Server and data waterfalls",
+              "PERFORMANCE.md#Interaction latency and long tasks",
+              "PERFORMANCE.md#Re-render and DOM churn",
+              "PERFORMANCE.md#Polling and background work",
+              "PERFORMANCE.md#Large lists and DOM size",
+              "PERFORMANCE.md#Long-session stability",
+              "PERFORMANCE.md#Back/forward cache",
+              "ACCESSIBILITY.md#Text and non-text contrast",
+              "ACCESSIBILITY.md#Text alternatives and names",
+              "ACCESSIBILITY.md#Color as the only signal",
+              "ACCESSIBILITY.md#Structure and semantics",
+              "ACCESSIBILITY.md#Forced colors and contrast preference",
+              "ACCESSIBILITY.md#Keyboard operation and focus order",
+              "ACCESSIBILITY.md#Focus visibility and obscuring",
+              "ACCESSIBILITY.md#Dialogs and overlays",
+              "ACCESSIBILITY.md#Motion and timing",
+              "ACCESSIBILITY.md#Pointer gestures and cancellation",
+              "ACCESSIBILITY.md#Form labels, errors and help",
+              "ACCESSIBILITY.md#Status messages and live regions",
+              "ACCESSIBILITY.md#Custom widget roles and states",
+              "ACCESSIBILITY.md#Accessible authentication",
+              "ACCESSIBILITY.md#Consistent navigation and help",
+              "VISUAL-AND-THEMING.md#Theme parity",
+              "VISUAL-AND-THEMING.md#Theme initialization and flash",
+              "VISUAL-AND-THEMING.md#Native controls and color scheme",
+              "VISUAL-AND-THEMING.md#Per-tenant brand colors",
+              "VISUAL-AND-THEMING.md#Token discipline",
+              "VISUAL-AND-THEMING.md#Component consistency",
+              "VISUAL-AND-THEMING.md#Icon family and imagery",
+              "VISUAL-AND-THEMING.md#Generic or template look",
+              "VISUAL-AND-THEMING.md#Public page metadata and share preview",
+              "VISUAL-AND-THEMING.md#Unintended visual change",
+              "RESILIENCE-AND-STATES.md#Loading states",
+              "RESILIENCE-AND-STATES.md#Empty states",
+              "RESILIENCE-AND-STATES.md#Error states and boundaries",
+              "RESILIENCE-AND-STATES.md#Not found and forbidden",
+              "RESILIENCE-AND-STATES.md#Hydration mismatches",
+              "RESILIENCE-AND-STATES.md#Offline and flaky network",
+              "RESILIENCE-AND-STATES.md#Slow responses and pending feedback",
+              "RESILIENCE-AND-STATES.md#Failed mutations",
+              "RESILIENCE-AND-STATES.md#Session expiry and re-entry",
+              "RESILIENCE-AND-STATES.md#Stale tabs and deploys",
+              "RESILIENCE-AND-STATES.md#Back, forward and refresh",
+              "RESILIENCE-AND-STATES.md#Hidden tab and resume",
+              "RESILIENCE-AND-STATES.md#Alerts, sounds and notifications",
+              "PROJECT-CONVENTIONS.md#Documented UI rules",
+              "PROJECT-CONVENTIONS.md#Owner preferences on record",
+              "PROJECT-CONVENTIONS.md#Code structure conventions",
+              "PROJECT-CONVENTIONS.md#Navigation and configuration drift",
+              "PROJECT-CONVENTIONS.md#Test presence conventions"
+            ],
+            "description": "The defect class or ordinary lens that found it. Core discipline, Universal moves and Validation rules blocks are not lenses."
+          },
+          "persona": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+                "description": "A persona role from run-metadata.json."
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The persona as the report names it."
+              }
+            },
+            "required": [
+              "role",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          "surface": {
+            "type": "object",
+            "properties": {
+              "route": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "A route such as /m/[slug], or static for repository-wide items."
+              },
+              "component": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Component name or null."
+              },
+              "state": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The screen or component state, such as 'checkout dialog open, transfer selected'."
+              }
+            },
+            "required": [
+              "route",
+              "component",
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          "context": {
+            "type": "object",
+            "description": "The context of the strongest reproduction. 'any' means the value does not change the result.",
+            "properties": {
+              "viewport": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "description": "The viewport the strongest reproduction used, or null when the viewport does not matter.",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$"
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 3840
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 3840
+                  },
+                  "dpr": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "id",
+                  "width",
+                  "height",
+                  "dpr"
+                ],
+                "additionalProperties": false
+              },
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark",
+                  "system",
+                  "any"
+                ]
+              },
+              "input_modality": {
+                "type": "string",
+                "enum": [
+                  "pointer",
+                  "touch",
+                  "keyboard",
+                  "screenreader",
+                  "any"
+                ]
+              },
+              "network": {
+                "type": "string",
+                "enum": [
+                  "fast",
+                  "slow4g",
+                  "slow3g",
+                  "offline",
+                  "flaky",
+                  "any"
+                ]
+              },
+              "data_state": {
+                "type": "string",
+                "enum": [
+                  "empty",
+                  "one",
+                  "typical",
+                  "heavy",
+                  "longtext",
+                  "stale",
+                  "any"
+                ]
+              },
+              "motion": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "reduced",
+                  "any"
+                ]
+              },
+              "zoom_percent": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 400
+              },
+              "browser": {
+                "type": "string",
+                "enum": [
+                  "chromium",
+                  "firefox",
+                  "webkit",
+                  "any"
+                ]
+              },
+              "timezone": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "IANA time zone, or null."
+              },
+              "locale": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "BCP 47 locale, or null."
+              },
+              "session": {
+                "type": "string",
+                "enum": [
+                  "fresh",
+                  "expired",
+                  "reopened",
+                  "twotabs",
+                  "twousers",
+                  "any"
+                ]
+              }
+            },
+            "required": [
+              "viewport",
+              "theme",
+              "input_modality",
+              "network",
+              "data_state"
+            ],
+            "additionalProperties": false
+          },
+          "expectation": {
+            "type": "object",
+            "properties": {
+              "source_kind": {
+                "type": "string",
+                "enum": [
+                  "repo_rule",
+                  "owner_preference",
+                  "business_rule",
+                  "standard",
+                  "budget",
+                  "sibling_screen",
+                  "platform_contract",
+                  "approved_baseline"
+                ]
+              },
+              "ref": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "An expectation ref in a coverage-ledger namespace: path#anchor, PR-NN, memory:<file>#<heading>, WCAG22#<sc>, HTML#<section>, a companion block ref, sibling:<path>, RULE:<rule-id> (a SOURCES.md rule; source_kind budget, standard or platform_contract) or baseline:<baseline-id>#<capture-key> (an approved visual baseline capture; source_kind approved_baseline only)."
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "What should happen, quoted or paraphrased from the source, in report_language."
+              }
+            },
+            "required": [
+              "source_kind",
+              "ref",
+              "statement"
+            ],
+            "additionalProperties": false
+          },
+          "claimed_root_cause": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "The cause the trace points to."
+          },
+          "trace": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "Source path of the defect: one entrypoint or sink, or entrypoint, propagation..., sink.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "entrypoint",
+                    "propagation",
+                    "sink"
+                  ]
+                },
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Repository-relative path."
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Function, component or block."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "kind",
+                "file",
+                "line",
+                "scope",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Repository-relative path or owned artifact path."
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "file",
+                "line",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "blockers": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "Each decisive fact that cannot be established locally.",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "visibleContent": true
+            }
+          },
+          "validation_plan": {
+            "type": "object",
+            "description": "At least one of local, device or owner.",
+            "properties": {
+              "local": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true
+              },
+              "device": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true
+              },
+              "owner": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true
+              }
+            },
+            "additionalProperties": false
+          },
+          "also_affects": {
+            "type": "array",
+            "uniqueItems": true,
+            "description": "Further screens or contexts of the same root cause.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "route": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Another route with the same root cause."
+                },
+                "context_summary": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Where and when it shows there."
+                }
+              },
+              "required": [
+                "route",
+                "context_summary"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "deliberation": {
+            "type": "array",
+            "uniqueItems": true,
+            "description": "Consults, judge rulings, escalations and fallback panels that shaped this record, copied from agent-log.json. Each id appears once per record and must exist in the agent log with a matching kind.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(dlg|esc|fb)-[0-9]{2,4}$",
+                  "description": "dlg-NN for a consult or judge, esc-NN for an escalation, fb-NN for a fallback panel."
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "consult",
+                    "judge",
+                    "escalation",
+                    "fallback_panel"
+                  ]
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "agreed",
+                    "judged_requester",
+                    "judged_peer",
+                    "judged_neither",
+                    "cancelled_budget",
+                    "cancelled_pause",
+                    "escalation_resolved",
+                    "escalation_unresolved",
+                    "escalation_not_funded",
+                    "panel_agreed",
+                    "panel_judged",
+                    "panel_majority",
+                    "panel_split",
+                    "panel_not_funded"
+                  ]
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "maxLength": 1200,
+                  "description": "What was asked, who took which position and how it ended, in report_language."
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "outcome",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "stronger_model_needed": {
+            "type": "object",
+            "description": "Present when the record ended on fallback mode none: the tier that could settle it and why the tiers that ran did not.",
+            "properties": {
+              "tier": {
+                "type": "string",
+                "enum": [
+                  "opus",
+                  "fable"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "What was decisive and why the available tier did not settle it, in report_language."
+              }
+            },
+            "required": [
+              "tier",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "verdict",
+          "fingerprint",
+          "title",
+          "description",
+          "lens",
+          "persona",
+          "surface",
+          "context",
+          "expectation",
+          "claimed_root_cause",
+          "trace",
+          "evidence",
+          "blockers",
+          "validation_plan"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "description": "A refuted claim, kept only to explain a disagreement with a prior run or a verifier's refutation.",
+        "properties": {
+          "verdict": {
+            "type": "string",
+            "const": "rejected"
+          },
+          "fingerprint": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$",
+            "description": "ASCII identifier of the root cause, <domain>/<lens-slug>/<surface-slug>/<defect-slug>. Never contains a line number, wave, agent, severity or verdict; identical in every state."
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "One line, in report_language.",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "What the user experiences, in report_language."
+          },
+          "lens": {
+            "type": "string",
+            "enum": [
+              "LENSES.md#Functional flows",
+              "LENSES.md#Business rules as displayed",
+              "LENSES.md#Forms and validation",
+              "LENSES.md#Loading, empty and error states",
+              "LENSES.md#Navigation and routing",
+              "LENSES.md#Data consistency across screens",
+              "LENSES.md#Roles in the interface",
+              "LENSES.md#Wildcard",
+              "LENSES.md#Obvious things",
+              "FUNCTIONAL-FLOWS.md#Entity lifecycle transitions",
+              "FUNCTIONAL-FLOWS.md#Multi-step flows and drafts",
+              "FUNCTIONAL-FLOWS.md#Double submit and idempotent actions",
+              "FUNCTIONAL-FLOWS.md#Concurrent sessions and stale views",
+              "FUNCTIONAL-FLOWS.md#Live updates and polling correctness",
+              "FUNCTIONAL-FLOWS.md#Displayed business rules",
+              "FUNCTIONAL-FLOWS.md#Figure consistency across screens",
+              "FUNCTIONAL-FLOWS.md#Money, quantity and rounding",
+              "FUNCTIONAL-FLOWS.md#Time, dates and time zones",
+              "FUNCTIONAL-FLOWS.md#Locale and number formatting",
+              "FUNCTIONAL-FLOWS.md#Exports match the screen",
+              "FUNCTIONAL-FLOWS.md#Form validation and boundary values",
+              "FUNCTIONAL-FLOWS.md#Search, filter, sort and pagination",
+              "FUNCTIONAL-FLOWS.md#Uploads and generated files",
+              "FUNCTIONAL-FLOWS.md#Role-gated actions",
+              "FUNCTIONAL-FLOWS.md#Destructive actions, confirmation and undo",
+              "RESPONSIVE-AND-LAYOUT.md#Horizontal overflow and clipping",
+              "RESPONSIVE-AND-LAYOUT.md#Breakpoint pivots",
+              "RESPONSIVE-AND-LAYOUT.md#Reflow, zoom and text spacing",
+              "RESPONSIVE-AND-LAYOUT.md#Orientation and safe areas",
+              "RESPONSIVE-AND-LAYOUT.md#Long and unbroken content",
+              "RESPONSIVE-AND-LAYOUT.md#Growing lists and internal scroll",
+              "RESPONSIVE-AND-LAYOUT.md#Overlap and stacking",
+              "RESPONSIVE-AND-LAYOUT.md#Target size and spacing",
+              "RESPONSIVE-AND-LAYOUT.md#Dialogs and on-screen keyboard",
+              "RESPONSIVE-AND-LAYOUT.md#Hover versus touch media",
+              "PERFORMANCE.md#Largest paint and render-blocking",
+              "PERFORMANCE.md#Layout shift",
+              "PERFORMANCE.md#JavaScript weight and client boundaries",
+              "PERFORMANCE.md#Images and media",
+              "PERFORMANCE.md#Fonts",
+              "PERFORMANCE.md#Server and data waterfalls",
+              "PERFORMANCE.md#Interaction latency and long tasks",
+              "PERFORMANCE.md#Re-render and DOM churn",
+              "PERFORMANCE.md#Polling and background work",
+              "PERFORMANCE.md#Large lists and DOM size",
+              "PERFORMANCE.md#Long-session stability",
+              "PERFORMANCE.md#Back/forward cache",
+              "ACCESSIBILITY.md#Text and non-text contrast",
+              "ACCESSIBILITY.md#Text alternatives and names",
+              "ACCESSIBILITY.md#Color as the only signal",
+              "ACCESSIBILITY.md#Structure and semantics",
+              "ACCESSIBILITY.md#Forced colors and contrast preference",
+              "ACCESSIBILITY.md#Keyboard operation and focus order",
+              "ACCESSIBILITY.md#Focus visibility and obscuring",
+              "ACCESSIBILITY.md#Dialogs and overlays",
+              "ACCESSIBILITY.md#Motion and timing",
+              "ACCESSIBILITY.md#Pointer gestures and cancellation",
+              "ACCESSIBILITY.md#Form labels, errors and help",
+              "ACCESSIBILITY.md#Status messages and live regions",
+              "ACCESSIBILITY.md#Custom widget roles and states",
+              "ACCESSIBILITY.md#Accessible authentication",
+              "ACCESSIBILITY.md#Consistent navigation and help",
+              "VISUAL-AND-THEMING.md#Theme parity",
+              "VISUAL-AND-THEMING.md#Theme initialization and flash",
+              "VISUAL-AND-THEMING.md#Native controls and color scheme",
+              "VISUAL-AND-THEMING.md#Per-tenant brand colors",
+              "VISUAL-AND-THEMING.md#Token discipline",
+              "VISUAL-AND-THEMING.md#Component consistency",
+              "VISUAL-AND-THEMING.md#Icon family and imagery",
+              "VISUAL-AND-THEMING.md#Generic or template look",
+              "VISUAL-AND-THEMING.md#Public page metadata and share preview",
+              "VISUAL-AND-THEMING.md#Unintended visual change",
+              "RESILIENCE-AND-STATES.md#Loading states",
+              "RESILIENCE-AND-STATES.md#Empty states",
+              "RESILIENCE-AND-STATES.md#Error states and boundaries",
+              "RESILIENCE-AND-STATES.md#Not found and forbidden",
+              "RESILIENCE-AND-STATES.md#Hydration mismatches",
+              "RESILIENCE-AND-STATES.md#Offline and flaky network",
+              "RESILIENCE-AND-STATES.md#Slow responses and pending feedback",
+              "RESILIENCE-AND-STATES.md#Failed mutations",
+              "RESILIENCE-AND-STATES.md#Session expiry and re-entry",
+              "RESILIENCE-AND-STATES.md#Stale tabs and deploys",
+              "RESILIENCE-AND-STATES.md#Back, forward and refresh",
+              "RESILIENCE-AND-STATES.md#Hidden tab and resume",
+              "RESILIENCE-AND-STATES.md#Alerts, sounds and notifications",
+              "PROJECT-CONVENTIONS.md#Documented UI rules",
+              "PROJECT-CONVENTIONS.md#Owner preferences on record",
+              "PROJECT-CONVENTIONS.md#Code structure conventions",
+              "PROJECT-CONVENTIONS.md#Navigation and configuration drift",
+              "PROJECT-CONVENTIONS.md#Test presence conventions"
+            ],
+            "description": "The defect class or ordinary lens that found it. Core discipline, Universal moves and Validation rules blocks are not lenses."
+          },
+          "persona": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+                "description": "A persona role from run-metadata.json."
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The persona as the report names it."
+              }
+            },
+            "required": [
+              "role",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          "surface": {
+            "type": "object",
+            "properties": {
+              "route": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "A route such as /m/[slug], or static for repository-wide items."
+              },
+              "component": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Component name or null."
+              },
+              "state": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "The screen or component state, such as 'checkout dialog open, transfer selected'."
+              }
+            },
+            "required": [
+              "route",
+              "component",
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          "context": {
+            "type": "object",
+            "description": "The context of the strongest reproduction. 'any' means the value does not change the result.",
+            "properties": {
+              "viewport": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "description": "The viewport the strongest reproduction used, or null when the viewport does not matter.",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$"
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 3840
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 3840
+                  },
+                  "dpr": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "id",
+                  "width",
+                  "height",
+                  "dpr"
+                ],
+                "additionalProperties": false
+              },
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark",
+                  "system",
+                  "any"
+                ]
+              },
+              "input_modality": {
+                "type": "string",
+                "enum": [
+                  "pointer",
+                  "touch",
+                  "keyboard",
+                  "screenreader",
+                  "any"
+                ]
+              },
+              "network": {
+                "type": "string",
+                "enum": [
+                  "fast",
+                  "slow4g",
+                  "slow3g",
+                  "offline",
+                  "flaky",
+                  "any"
+                ]
+              },
+              "data_state": {
+                "type": "string",
+                "enum": [
+                  "empty",
+                  "one",
+                  "typical",
+                  "heavy",
+                  "longtext",
+                  "stale",
+                  "any"
+                ]
+              },
+              "motion": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "reduced",
+                  "any"
+                ]
+              },
+              "zoom_percent": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 400
+              },
+              "browser": {
+                "type": "string",
+                "enum": [
+                  "chromium",
+                  "firefox",
+                  "webkit",
+                  "any"
+                ]
+              },
+              "timezone": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "IANA time zone, or null."
+              },
+              "locale": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "BCP 47 locale, or null."
+              },
+              "session": {
+                "type": "string",
+                "enum": [
+                  "fresh",
+                  "expired",
+                  "reopened",
+                  "twotabs",
+                  "twousers",
+                  "any"
+                ]
+              }
+            },
+            "required": [
+              "viewport",
+              "theme",
+              "input_modality",
+              "network",
+              "data_state"
+            ],
+            "additionalProperties": false
+          },
+          "expectation": {
+            "type": "object",
+            "properties": {
+              "source_kind": {
+                "type": "string",
+                "enum": [
+                  "repo_rule",
+                  "owner_preference",
+                  "business_rule",
+                  "standard",
+                  "budget",
+                  "sibling_screen",
+                  "platform_contract",
+                  "approved_baseline"
+                ]
+              },
+              "ref": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "An expectation ref in a coverage-ledger namespace: path#anchor, PR-NN, memory:<file>#<heading>, WCAG22#<sc>, HTML#<section>, a companion block ref, sibling:<path>, RULE:<rule-id> (a SOURCES.md rule; source_kind budget, standard or platform_contract) or baseline:<baseline-id>#<capture-key> (an approved visual baseline capture; source_kind approved_baseline only)."
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1,
+                "visibleContent": true,
+                "description": "What should happen, quoted or paraphrased from the source, in report_language."
+              }
+            },
+            "required": [
+              "source_kind",
+              "ref",
+              "statement"
+            ],
+            "additionalProperties": false
+          },
+          "claimed_root_cause": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true
+          },
+          "trace": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "Source path of the defect: one entrypoint or sink, or entrypoint, propagation..., sink.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "entrypoint",
+                    "propagation",
+                    "sink"
+                  ]
+                },
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Repository-relative path."
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "description": "Function, component or block."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "kind",
+                "file",
+                "line",
+                "scope",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Repository-relative path or owned artifact path."
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true
+                }
+              },
+              "required": [
+                "file",
+                "line",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "visibleContent": true,
+            "description": "Why the claim does not hold: refuted, expectation misread, no user impact, or a fixture artifact."
+          },
+          "deliberation": {
+            "type": "array",
+            "uniqueItems": true,
+            "description": "Consults, judge rulings, escalations and fallback panels that shaped this record, copied from agent-log.json. Each id appears once per record and must exist in the agent log with a matching kind.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(dlg|esc|fb)-[0-9]{2,4}$",
+                  "description": "dlg-NN for a consult or judge, esc-NN for an escalation, fb-NN for a fallback panel."
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "consult",
+                    "judge",
+                    "escalation",
+                    "fallback_panel"
+                  ]
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "agreed",
+                    "judged_requester",
+                    "judged_peer",
+                    "judged_neither",
+                    "cancelled_budget",
+                    "cancelled_pause",
+                    "escalation_resolved",
+                    "escalation_unresolved",
+                    "escalation_not_funded",
+                    "panel_agreed",
+                    "panel_judged",
+                    "panel_majority",
+                    "panel_split",
+                    "panel_not_funded"
+                  ]
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1,
+                  "visibleContent": true,
+                  "maxLength": 1200,
+                  "description": "What was asked, who took which position and how it ended, in report_language."
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "outcome",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "verdict",
+          "fingerprint",
+          "title",
+          "description",
+          "lens",
+          "persona",
+          "surface",
+          "context",
+          "expectation",
+          "claimed_root_cause",
+          "trace",
+          "evidence",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  }
+}
